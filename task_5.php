@@ -37,12 +37,14 @@
                     'img' => 'img/demo/authors/sunny.png',
                     'job' => '(UI/UX Expert)',
                     'position' => 'Lead Author',
+                    'email_href' => 'https://twitter.com/@myplaneticket',
                     'email' => '@myplaneticket'],
                 [
                     'name' => 'Jos K.',
                     'img' => 'img/demo/authors/josh.png',
                     'job' => '(ASP.NET Developer)',
                     'position' => 'Partner &amp; Contributor',
+                    'email_href' => 'https://twitter.com/@atlantez',
                     'email' => '@atlantez'
                 ],
                 [
@@ -50,6 +52,7 @@
                     'img' => 'img/demo/authors/jovanni.png',
                     'job' => '(PHP Developer)',
                     'position' => 'Partner &amp; Contributor',
+                    'email_href' => 'https://twitter.com/@lodev09',
                     'email' => '@lodev09'
                 ],
                 [
@@ -57,6 +60,7 @@
                     'img' => 'img/demo/authors/roberto.png',
                     'job' => '(Rails Developer)',
                     'position' => 'Partner &amp; Contributor',
+                    'email_href' => 'https://twitter.com/@sildur',
                     'email' => '@sildur'
                 ],
 
@@ -79,7 +83,7 @@
                                     </h5>
 
 
-                                    <a href="https://twitter.com/@myplaneticket" class="text-info fs-sm"
+                                    <a href=" <?php echo $dev['email_href'] ?>" class="text-info fs-sm"
                                        target="_blank"> <?php echo $dev['email'] ?> </a>
 
                                     -
