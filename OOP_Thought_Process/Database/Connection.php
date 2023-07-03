@@ -2,9 +2,13 @@
 
 class Connection
 {
-    public static function connect() : PDO
+    public static function connect($config) : PDO
     {
-        $pdo = new PDO('mysql:host=marl;dbName=BlogDB;charset=utf8', 'root', '');
-        return $pdo;
+        return new PDO("{$config['connection']};
+                            dbName={$config['database']};
+                            charset={$config['charset']}",
+                            $config['username'],
+                            $config['password']);
+
     }
 }
