@@ -11,11 +11,10 @@ function dd($data) : void
     die();
 }
 
-function getAllPosts() : bool | array
+function connectToDatabase() : PDO
 {
     $pdo = new PDO('mysql:host=marl;dbName=BlogDB;charset=utf8', 'root', '');
-    $statement = $pdo->prepare('SELECT * FROM BlogDB.posts');
-    $statement->execute();
-    $posts = $statement->fetchAll(PDO::FETCH_ASSOC);
-    return $posts;
+    return $pdo;
 }
+
+
