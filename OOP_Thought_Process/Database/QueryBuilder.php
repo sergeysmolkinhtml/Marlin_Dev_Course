@@ -9,12 +9,11 @@ class QueryBuilder
         $this->pdo = $pdo;
     }
 
-    function getAll() : bool | array
+    function getAll($tableName) : bool | array
     {
-        $statement = $this->pdo->prepare('SELECT * FROM BlogDB.posts');
+        $statement = $this->pdo->prepare("SELECT * FROM BlogDB.{$tableName}");
         $statement->execute();
-        $posts = $statement->fetchAll(PDO::FETCH_ASSOC);
-        return $posts;
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
 }
