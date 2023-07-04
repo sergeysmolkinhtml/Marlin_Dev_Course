@@ -66,26 +66,20 @@
                             <div class="panel-content">
                                 <div class="panel-content image-gallery">
                                     <div class="row">
-                                        <div class="col-md-3 image">
-                                            <img src="img/demo/gallery/1.jpg">
-                                        </div>
-
-                                        <div class="col-md-3 image">
-                                            <img src="img/demo/gallery/2.jpg">
-                                        </div>
-
-                                        <div class="col-md-3 image">
-                                            <img src="img/demo/gallery/3.jpg">
-                                        </div>
                                         <?php
                                         $pdo = new PDO('mysql:host=marl;dbname=users', 'root', '');
 
                                         $stmt = $pdo->query('SELECT path FROM images');
                                         $images = $stmt->fetchAll(PDO::FETCH_COLUMN);
+                                        ?>
+                                        
+                                        <?php foreach ($images as $image): ?>
+                                        
+                                        <div class="col-md-3 image">
+                                            <img src="upload/<?php echo $image?>" alt="">
+                                        </div>
 
-                                        foreach ($images as $image) {
-                                            echo '<img src="upload/' . $image . '" alt="Изображение"><br>';
-                                        }?>
+                                        <?php endforeach; ?>
 
                                     </div>
                                 </div>

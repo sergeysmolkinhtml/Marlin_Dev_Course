@@ -62,7 +62,7 @@
                                     <li class='list-group-item'>
                                         <span data-filter-tags=<?php echo $value['tag'] ?> > <?php echo $value['title'] ?> </span>
                                     </li>
-                                <?php  endforeach; ?>
+                                <?php endforeach; ?>
                             </ul>
                             <div class="filter-message js-filter-message mt-0 fs-sm"></div>
                         </div>

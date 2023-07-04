@@ -2,7 +2,6 @@
 $_SESSION['user1'] = 'john'
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>

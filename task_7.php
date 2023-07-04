@@ -61,7 +61,7 @@
             'position' => 'Human Resources, Gotbootstrap Inc.',
             'address' => '55 Smyth Rd, Detroit, MI, 48341, USA',
             'email' => 'john.cook@smartadminwebapp.com',
-            'email_href' => 'mailto:oliver.kopyov@smartadminwebapp.com',
+            'email_href' => 'mailto:drjohn.cook@smartadminwebapp.com',
             'phone' => '+1 313-779-1347',
             'tag' => 'dr john cook'
         ],
@@ -70,7 +70,7 @@
             'position' => 'Staff Orgnizer, Gotbootstrap Inc',
             'address' => '134 Tasy Rd, Detroit, MI, 48212, USA',
             'email' => 'jim.ketty@smartadminwebapp.com',
-            'email_href' => 'mailto:oliver.kopyov@smartadminwebapp.com',
+            'email_href' => 'mailto:jim.ketty@smartadminwebapp.com',
             'phone' => '+1 313-779-3314',
             'tag' => 'jim ketty'
         ],
@@ -79,7 +79,7 @@
             'position' => 'Oncologist, Gotbootstrap Inc.',
             'address' => '134 Gallery St, Detroit, MI, 46214, USA',
             'email' => 'john.oliver@smartadminwebapp.com',
-            'email_href' => 'mailto:oliver.kopyov@smartadminwebapp.com',
+            'email_href' => 'mailto:aaron.tellus@smartadminwebapp.com',
             'phone' => '+1 313-779-8134',
             'tag' => 'aaron tellus'
         ],

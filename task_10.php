@@ -50,6 +50,7 @@
                                     $statement = $pdo->prepare('INSERT INTO INPUT (text) VALUES (:text) ');
                                     $statement->execute(['text' => $text]);
 
+                                    header('Location: http://marl/task_10.php');
                                     }
                                 ?>
                             </div>

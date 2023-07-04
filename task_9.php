@@ -43,7 +43,7 @@
                             </h5>
                             <div class="frame-wrap">
                                 <table class="table m-0">
-                                    <thead>
+                                    <thead> Users </thead>
                                         <tr>
                                             <th>#</th>
                                             <th>First Name</th>
@@ -51,7 +51,7 @@
                                             <th>Username</th>
                                             <th>Actions</th>
                                         </tr>
-                                    </thead>
+
                                     <tbody>
                                     <?php foreach ($users as $user):?>
                                         <tr>

@@ -70,8 +70,8 @@
                     ) ?>
                     <div class="panel-container show">
                         <div class="panel-content">
-                            <?php foreach ($devs as $dev): ?>
-                                <div class="d-flex flex-wrap demo demo-h-spacing mt-3 mb-3">
+
+                                <div class="d-flex flex-wrap demo demo-h-spacing mt-3 mb-3"> <?php foreach ($devs as $dev): ?>
                                     <div class=" <?php if ($dev['is_banned'] === true) echo 'banned' ?> rounded-pill bg-white shadow-sm p-2 border-faded mr-3 d-flex flex-row align-items-center justify-content-center flex-shrink-0">
                                         <img src="<?php echo $dev['img'] ?>" alt="Sunny A."
                                              class="img-thumbnail img-responsive rounded-circle"
@@ -85,16 +85,16 @@
                                             </h5>
 
 
-                                            <a href=" <?php echo $dev['email_href'] ?>" class="text-info fs-sm"
+                                            <a href=" " class="text-info fs-sm"
                                                target="_blank"> <?php echo $dev['email'] ?> </a>
 
                                             -
                                             <a href="https://wrapbootstrap.com/user/myorange" class="text-info fs-sm"
                                                target="_blank" title="Contact Sunny"><i class="fal fa-envelope"></i></a>
                                         </div>
-                                    </div>
+                                    </div>  <?php endforeach ?>
                                 </div>
-                            <?php endforeach ?>
+
 
                         </div>
                         </div>

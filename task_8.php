@@ -48,8 +48,9 @@
                     <ol class="breadcrumb page-breadcrumb active">
                         <?php foreach ($menu as $item): ?>
                             <?php if ($item['is_active']): ?>
-                                <li class="breadcrumb-item"><a
-                                            href="<?php echo $item['href']; ?>"> <?php echo $item['title']; ?> </a></li>
+                                <li class="breadcrumb-item">
+                                    <a href="<?php echo $item['href']; ?>"> <?php echo $item['title']; ?> </a>
+                                </li>
                             <?php else: ?>
                                 <li class="breadcrumb-item active"> <?php echo $item['title']; ?> </li>
                             <?php endif ?>

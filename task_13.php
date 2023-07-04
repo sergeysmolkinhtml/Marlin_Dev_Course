@@ -29,19 +29,22 @@
                             Задание
                         </h2>
                         <div class="panel-toolbar">
-                            <button class="btn btn-panel waves-effect waves-themed" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
-                            <button class="btn btn-panel waves-effect waves-themed" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
+                            <button class="btn btn-panel waves-effect waves-themed" data-action="panel-collapse"
+                                    data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
+                            <button class="btn btn-panel waves-effect waves-themed" data-action="panel-fullscreen"
+                                    data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
                         </div>
                     </div>
                     <div class="panel-container show">
                         <div class="panel-content">
                             <div class="panel-content">
                                 <div class="form-group">
-                                    <?php if( $_SESSION['text'] ??''): ?>
-                                        <div class="alert alert-info">  <?php  echo 'Текст есть'; unset($_SESSION['text'])?></div>
-                                    <?php else:  ?>
+                                    <?php if (isset($_SESSION['msg'])): ?>
+                                        <div class="alert alert-info">  <?php echo 'Текст есть'; ?></div>
+                                        <?php unset($_SESSION['msg']); ?>
+                                    <?php else:?>
                                         <div class="alert alert-danger">  <?php  echo "Нет такого сообщения"?></div>
-                                    <?php endif ?>
+                                    <?php endif; ?>
                                     <form action="task_13_handler.php" method="post">
                                         <label class="form-label" for="simpleinput">Text</label>
                                         <input type="text" name="inputext" id="simpleinput" class="form-control">
