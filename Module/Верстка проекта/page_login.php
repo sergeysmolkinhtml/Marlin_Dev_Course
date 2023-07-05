@@ -1,5 +1,4 @@
-
-<?php session_start() ?>
+<?php session_start();?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,14 +39,27 @@
                 <?php echo $_SESSION['user_created']; ?>
             </div>
             <?php endif; unset($_SESSION['user_created']) ?>
-            <form action="">
+
+            <?php if(isset($_SESSION['wrong_email'])):?>
+                <div class="alert alert-danger">
+                    <?php echo $_SESSION['wrong_email']; ?>
+                </div>
+            <?php endif; unset($_SESSION['wrong_email']) ?>
+
+            <?php if(isset($_SESSION['wrong_password'])):?>
+                <div class="alert alert-danger">
+                    <?php echo $_SESSION['wrong_password']; ?>
+                </div>
+            <?php endif; unset($_SESSION['wrong_password']) ?>
+
+            <form action="../login.php" method="post">
                 <div class="form-group">
                     <label class="form-label" for="username">Email</label>
-                    <input type="email" id="username" class="form-control" placeholder="Эл. адрес" value="">
+                    <input type="email" id="username" name="email" class="form-control" placeholder="Эл. адрес" value="">
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="password">Пароль</label>
-                    <input type="password" id="password" class="form-control" placeholder="" >
+                    <input type="password" id="password" name="password" class="form-control" placeholder="" >
                 </div>
                 <button type="submit" class="btn btn-default float-right">Войти</button>
             </form>
