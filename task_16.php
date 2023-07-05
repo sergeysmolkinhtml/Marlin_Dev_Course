@@ -1,4 +1,4 @@
-<?php session_start();
+<?php
 //$_SESSION['user1'] = 'john'
 ?>
 
@@ -39,7 +39,7 @@
                             <div class="panel-content">
                                 <div class="form-group">
                                     <div class="alert alert-success fade show" role="alert">
-                                        //Здравствуйте <?php unset($_SESSION['user1'])  ?>.
+
                                     </div>
                                     <form action="task_16_handler.php" method="post">
                                         <button type="submit" class="btn btn-info"> Выйти </button>

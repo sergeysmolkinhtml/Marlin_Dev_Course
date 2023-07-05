@@ -39,3 +39,51 @@ function displayFlashMessage(String $name) : Void
         unset($_SESSION[$name]);
     }
 }
+
+function getAllUsers() : Array | Bool
+{
+    $pdo = new PDO('mysql:host=marl;dbname=module', 'root', '');
+    $stmt = $pdo->prepare('SELECT * FROM module.users');
+    $stmt->execute();
+    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $users;
+}
+
+function isNotLoggedIn() : Bool
+{
+    return !isLoggedIn();
+}
+
+function isLoggedIn() : Bool
+{
+    if(isset($_SESSION['user'])) {
+        return true;
+    }
+    return false;
+}
+
+function isAdmin($user)
+{
+    if(isLoggedIn()){
+        if($user['role'] === 'admin') {
+            return true;
+        }
+    }
+    return false;
+}
+
+function getCurrentUser()
+{
+    if(isLoggedIn()) {
+        return $_SESSION['user'];
+    }
+   return false;
+}
+
+function isEqual($user, $currentUser) : Bool
+{
+    if($user['id'] == $currentUser['id']){
+         return true;
+    }
+    return false;
+}

@@ -1,9 +1,7 @@
 <?php
 session_start();
 
-require_once '../OOP_Thought_Process/functions.php';
-require_once 'functions.php';
-
+require 'functions.php';
 
 function Login() : Bool
 {
@@ -28,13 +26,22 @@ function Login() : Bool
             return false;
         }
     }
+    $_SESSION['user'] = [
+        'id' => $user['id'],
+        'email' => $user['email'],
+        'password' => $user['password'],
+        'role' => $user['role']
+    ];
 
     return true;
 }
+
 if(Login())
-    redirect('users.html');
+    redirect('users.php');
 else
     redirect('page_login.php');
+
+
 
 
 
