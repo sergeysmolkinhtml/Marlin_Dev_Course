@@ -1,9 +1,24 @@
 <?php
 session_start();
 
-include_once '../OOP_Thought_Process/functions.php';
+require_once 'functions.php';
 
-$pdo = new PDO('mysql:host=marl;dbname=module','root', '');
+$email = $_POST['email'];
+$password = $_POST['password'];
+
+$user = getUserByEmail($email);
+
+if(!empty($user)) {
+    setFlashMessage('user_exists', 'Адреcс занят другим пользователем');
+    redirect('page_register.php');
+}
+
+createUser($email,$password);
+
+setFlashMessage('user_created', 'Регистрация успешна');
+redirect('page_login.php');
+
+/*$pdo = new PDO('mysql:host=marl;dbname=module','root', '');
 
 if($_POST) {
     $statement = $pdo->prepare('SELECT * FROM module.users WHERE email = :email');
@@ -28,4 +43,4 @@ $newUser = $statementAdd->fetch(PDO::FETCH_ASSOC);
 
 $_SESSION['user_created'] = 'Log: Юзер успешно зарегестрирован';
 
-header('Location: http://marl/Module/Верстка%20проекта/page_login.php');
+header('Location: http://marl/Module/Верстка%20проекта/page_login.php');*/
