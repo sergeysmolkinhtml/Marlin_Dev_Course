@@ -37,7 +37,7 @@
         <div class="card p-4 border-top-left-radius-0 border-top-right-radius-0">
             <?php if(isset($_SESSION['user_created'])):?>
             <div class="alert alert-success">
-                <?php echo $_SESSION['user_created']; ?>>
+                <?php echo $_SESSION['user_created']; ?>
             </div>
             <?php endif; unset($_SESSION['user_created']) ?>
             <form action="">
