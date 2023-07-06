@@ -56,18 +56,18 @@ if(!getCurrentUser()) header("Location: http://marl/Module/Верстка%20пр
                                         <?php
                                         $email = $_SESSION['user']['email'];
                                         $user = getUserByEmail($email);
-                                        var_dump($user);
+                                        echo $user['name']
                                         ?>
-                                        <small class="text-muted mb-0">Toronto, Canada</small>
+                                        <small class="text-muted mb-0"><?php echo $user['job']?></small>
                                     </h5>
                                     <div class="mt-4 text-center demo">
-                                        <a href="javascript:void(0);" class="fs-xl" style="color:#C13584">
+                                        <a href="<?php echo $user['instagram']?>" class="fs-xl" style="color:#C13584">
                                             <i class="fab fa-instagram"></i>
                                         </a>
-                                        <a href="javascript:void(0);" class="fs-xl" style="color:#4680C2">
+                                        <a href="<?php echo $user['vk']?>" class="fs-xl" style="color:#4680C2">
                                             <i class="fab fa-vk"></i>
                                         </a>
-                                        <a href="javascript:void(0);" class="fs-xl" style="color:#0088cc">
+                                        <a href="<?php echo $user['telegram']?>" class="fs-xl" style="color:#0088cc">
                                             <i class="fab fa-telegram"></i>
                                         </a>
                                     </div>
@@ -76,11 +76,11 @@ if(!getCurrentUser()) header("Location: http://marl/Module/Верстка%20пр
                             <div class="col-12">
                                 <div class="p-3 text-center">
                                     <a href="tel:+13174562564" class="mt-1 d-block fs-sm fw-400 text-dark">
-                                        <i class="fas fa-mobile-alt text-muted mr-2"></i> +1 317-456-2564</a>
+                                        <i class="fas fa-mobile-alt text-muted mr-2"></i> <?php echo $user['phone']?></a>
                                     <a href="mailto:oliver.kopyov@marlin.ru" class="mt-1 d-block fs-sm fw-400 text-dark">
-                                        <i class="fas fa-mouse-pointer text-muted mr-2"></i> oliver.kopyov@marlin.ru</a>
+                                        <i class="fas fa-mouse-pointer text-muted mr-2"></i> <?php echo $user['email']?></a>
                                     <address class="fs-sm fw-400 mt-4 text-muted">
-                                        <i class="fas fa-map-pin mr-2"></i> Восточные Королевства, Штормград 15
+                                        <i class="fas fa-map-pin mr-2"></i> <?php echo $user['address']?>
                                     </address>
                                 </div>
                             </div>
