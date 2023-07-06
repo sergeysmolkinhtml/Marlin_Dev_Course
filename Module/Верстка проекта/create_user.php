@@ -1,6 +1,7 @@
 <?php session_start() ;
 require '../functions.php';
-if(!isAdmin(getCurrentUser())) redirect('page_login.php')
+
+if(!isAdmin(getCurrentUser())) redirect('page_login.php');
 
 ?>
 <!DOCTYPE html>
@@ -116,10 +117,13 @@ if(!isAdmin(getCurrentUser())) redirect('page_login.php')
                                     </select>
                                 </div>
 
-                                <div class="form-group">
-                                    <label class="form-label" for="avatar">Загрузить аватар</label>
-                                    <input type="file" id="avatar" name="avatar" class="form-control-file">
-                                </div>
+                                <form action="../add_new_user.php" enctype="multipart/form-data" method="post" >
+                                    <div class="form-group">
+                                        <label class="form-label" for="avatar">Загрузить аватар</label>
+                                        <input type="file" id="avatar" name="avatar" class="form-control-file">
+                                    </div>
+                                    <button type="submit"> Upload</button>
+                                </form>
                             </div>
                         </div>
                         

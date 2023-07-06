@@ -6,7 +6,7 @@ if (isNotLoggedIn()) {
     header('Location: http://marl/Module/Верстка%20проекта/page_login.php');
 }
 
-$users = getAllUsers();
+$users = getUsersAllCols(11);
 
 ?>
 <!DOCTYPE html>
@@ -107,7 +107,7 @@ $users = getAllUsers();
 
                                 if (isAdmin($_SESSION['user']) || getCurrentUser() === $user):?>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="edit.html">
+                                        <a class="dropdown-item" href="edit.php">
                                             <i class="fa fa-edit"></i>
                                             Редактировать</a>
                                         <a class="dropdown-item" href="security.html">

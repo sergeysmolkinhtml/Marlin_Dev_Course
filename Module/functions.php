@@ -25,11 +25,65 @@ function createUser(String $email, String $password) : Bool | String
     $sql = "INSERT INTO module.users (email, password) VALUES (:email, :password)";
     $statementAdder = $pdo->prepare($sql);
 
-    $statementAdder->execute(['email' => $_POST['email'], 'password' => password_hash($password, PASSWORD_DEFAULT)]);
+    $statementAdder->execute(['email' => $email, 'password' => password_hash($password, PASSWORD_DEFAULT)]);
 
     $newUser = $statementAdder->fetch(PDO::FETCH_ASSOC);
 
     return $pdo->lastInsertId();
+}
+
+function editUserInfo($username,$job,$phone,$address,$userId) : Void
+{
+    $pdo = new PDO('mysql:host=marl;dbname=module','root', '');
+    $sql = "INSERT INTO module.user_info (name,job,phone,address,user_id) VALUES (:name,:job,:phone,:address,:user_id)";
+    $statement = $pdo->prepare($sql);
+    $statement->execute([
+        'name' => $username,
+        'job' => $job,
+        'phone' => $phone,
+        'address' => $address,
+        'user_id' => $userId,
+    ]);
+}
+
+function setStatus($status, $userId) : Void
+{
+    $pdo = new PDO('mysql:host=marl;dbname=module','root', '');
+    $sql = "INSERT INTO module.user_attend (status, user_id) VALUES (:status,:user_id)";
+    $statement = $pdo->prepare($sql);
+    $statement->execute([
+        'status' => $status,
+        'user_id' => $userId
+    ]);
+
+}
+
+function uploadAvatar(Array $image, $userId) : Void
+{
+    $uniqueName = uniqid();
+    $extension = pathinfo($image['name'], PATHINFO_EXTENSION);
+    $filename = $uniqueName . '.' . $extension;
+
+    $uploadPath = 'avatars/' . $filename;
+
+    move_uploaded_file($image['tmp_name'], $uploadPath);
+    $pdo = new PDO('mysql:host=marl;dbname=users', 'root', '');
+    $stmt = $pdo->prepare("UPDATE module.user_attend SET avatar = :avatar WHERE id=$userId");
+    $stmt->execute(['avatar' => $filename]);
+
+}
+
+function addSocialLinks($telegram, $instagram, $vk,$userId) : Void
+{
+    $pdo = new PDO('mysql:host=marl;dbname=module','root', '');
+    $sql = "INSERT INTO module.user_socials(vk,telegram,instagram,user_id) VALUES (:vk,:telegram,:instagram,:user_id)";
+    $statement = $pdo->prepare($sql);
+    $statement->execute([
+        'vk' => $vk,
+        'telegram' => $telegram,
+        'instagram' => $instagram,
+        'user_id' => $userId,
+    ]);
 }
 
 function displayFlashMessage(String $name) : Void
@@ -62,7 +116,7 @@ function isLoggedIn() : Bool
     return false;
 }
 
-function isAdmin($user) : bool
+function isAdmin($user) : Bool
 {
     return $user['role'] === 'admin';
 }
@@ -91,4 +145,30 @@ function createNewUser(Array $data) : Bool
     $statementAdder = $pdo->prepare($sql);
     $user = $statementAdder->execute($data);
     return $user;
+}
+
+function getUsersAllCols($userId) : array | bool
+{
+    $pdo = new PDO('mysql:host=marl;dbname=module','root', '');
+    $users = $pdo->prepare('SELECT * FROM module.users');
+    $usersInfo = $pdo->prepare('SELECT * FROM module.user_info');
+    $usersSocials = $pdo->prepare('SELECT * FROM module.user_socials');
+    $users = $pdo->prepare('SELECT * FROM module.user_attend');
+
+    $query = "
+    SELECT * FROM module.users WHERE id = :id
+    UNION
+    SELECT * FROM module.user_info WHERE id = :id
+    UNION
+    SELECT * FROM module.user_socials WHERE id = :id
+    UNION
+    SELECT * FROM module.user_attend WHERE id = :id
+";
+    $statement = $pdo->prepare($query);
+    $statement->bindParam(':id', $id);
+    $statement->execute();
+
+    $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+    return $results;
+
 }

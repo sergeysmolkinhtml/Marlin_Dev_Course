@@ -1,3 +1,9 @@
+<?php session_start();
+require '../functions.php';
+
+
+if(!getCurrentUser()) header("Location: http://marl/Module/Верстка%20проекта/page_login.php"); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +41,7 @@
         <main id="js-page-content" role="main" class="page-content mt-3">
             <div class="subheader">
                 <h1 class="subheader-title">
-                    <i class='subheader-icon fal fa-user'></i> Иван Иванов
+                    <i class='subheader-icon fal fa-user'></i>
                 </h1>
             </div>
             <div class="row">
@@ -47,7 +53,11 @@
                                 <div class="d-flex flex-column align-items-center justify-content-center p-4">
                                     <img src="img/demo/avatars/avatar-admin-lg.png" class="rounded-circle shadow-2 img-thumbnail" alt="">
                                     <h5 class="mb-0 fw-700 text-center mt-3">
-                                        Иван Иванов 
+                                        <?php
+                                        $email = $_SESSION['user']['email'];
+                                        $user = getUserByEmail($email);
+                                        var_dump($user);
+                                        ?>
                                         <small class="text-muted mb-0">Toronto, Canada</small>
                                     </h5>
                                     <div class="mt-4 text-center demo">

@@ -26,12 +26,7 @@ function Login() : Bool
             return false;
         }
     }
-    $_SESSION['user'] = [
-        'id' => $user['id'],
-        'email' => $user['email'],
-        'password' => $user['password'],
-        'role' => $user['role']
-    ];
+    $_SESSION['user'] = $user;
 
     return true;
 }
