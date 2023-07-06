@@ -1,3 +1,15 @@
+<?php session_start( );
+require "../functions.php";
+if(!getCurrentUser()) header('Location: http://marl/Module/Верстка%20проекта/page_login.php');
+$users = getAllUsers();
+
+if(!isAdmin(getCurrentUser()) && !isEqual($users, getCurrentUser())) {
+    header('Location: http://marl/Module/Верстка%20проекта/page_login.php');
+}
+$user = getUserById($_SESSION['user']['id']);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +50,18 @@
             </h1>
 
         </div>
-        <form action="">
+        <?php if(isset($_SESSION['error_confirm'])):?>
+                <div class="alert alert-danger"> <?php echo $_SESSION['error_confirm']?> </div>
+        <?php endif; unset($_SESSION['error_confirm']) ?>
+
+        <?php if(isset($_SESSION['user_updated'])):?>
+            <div class="alert alert-info"> <?php echo $_SESSION['user_updated']?> </div>
+        <?php endif; unset($_SESSION['user_updated']) ?>
+
+        <?php if(isset($_SESSION['error_email'])):?>
+            <div class="alert alert-info"> <?php echo $_SESSION['error_email']?> </div>
+        <?php endif; unset($_SESSION['error_email']) ?>
+        <form action="../update_security.php" method="post">
             <div class="row">
                 <div class="col-xl-6">
                     <div id="panel-1" class="panel">
@@ -49,25 +72,25 @@
                             <div class="panel-content">
                                 <!-- email -->
                                 <div class="form-group">
-                                    <label class="form-label" for="simpleinput">Email</label>
-                                    <input type="text" id="simpleinput" class="form-control" value="john@example.com">
+                                    <label class="form-label" for="email">Email</label>
+                                    <input type="text" id="email" name="email" class="form-control" value="<?php echo $user['email']?> ">
                                 </div>
 
                                 <!-- password -->
                                 <div class="form-group">
-                                    <label class="form-label" for="simpleinput">Пароль</label>
-                                    <input type="password" id="simpleinput" class="form-control">
+                                    <label class="form-label" for="password">Пароль</label>
+                                    <input type="password" id="password" name="password" class="form-control" value="">
                                 </div>
 
                                 <!-- password confirmation-->
                                 <div class="form-group">
-                                    <label class="form-label" for="simpleinput">Подтверждение пароля</label>
-                                    <input type="password" id="simpleinput" class="form-control">
+                                    <label class="form-label" for="confirm_password">Подтверждение пароля</label>
+                                    <input type="password" id="confirm_password" name="confirm_password" class="form-control">
                                 </div>
 
 
                                 <div class="col-md-12 mt-3 d-flex flex-row-reverse">
-                                    <button class="btn btn-warning">Изменить</button>
+                                    <button type="submit" class="btn btn-warning">Изменить</button>
                                 </div>
                             </div>
                         </div>

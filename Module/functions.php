@@ -8,6 +8,14 @@ function getUserByEmail(String $email) : Bool | Array
     return $statement->fetch(PDO::FETCH_ASSOC);
 }
 
+function getUserById($id)
+{
+    $pdo = new PDO('mysql:host=marl;dbname=module','root', '');
+    $statement = $pdo->prepare('SELECT * FROM module.users WHERE id = :id');
+    $statement->execute(['id' => $id]);
+    return $statement->fetch(PDO::FETCH_ASSOC);
+}
+
 function setFlashMessage(String $name, String $message) : Void
 {
     $_SESSION[$name] = $message;
