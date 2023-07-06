@@ -60,6 +60,9 @@ $users = getAllUsers();
     </div>
     <div class="row">
         <div class="col-xl-12">
+            <?php if(isset($_SESSION['user_created'])): ?>
+                <?php echo $_SESSION['user_created']?>
+            <?php endif ; unset($_SESSION['user_created'])?>
         <?php if(isAdmin(getCurrentUser())): ?>
              <a class="btn btn-success" href="create_user.php">Добавить</a>
         <?php endif ?>
@@ -102,7 +105,7 @@ $users = getAllUsers();
                                 </a>
                                 <?php
 
-                                if (isAdmin(getCurrentUser()) || isEqual($user, getCurrentUser())):?>
+                                if (isAdmin($_SESSION['user']) || getCurrentUser() === $user):?>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="edit.html">
                                             <i class="fa fa-edit"></i>

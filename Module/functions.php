@@ -62,14 +62,9 @@ function isLoggedIn() : Bool
     return false;
 }
 
-function isAdmin($user)
+function isAdmin($user) : bool
 {
-    if(isLoggedIn()){
-        if($user['role'] === 'admin') {
-            return true;
-        }
-    }
-    return false;
+    return $user['role'] === 'admin';
 }
 
 function getCurrentUser()
@@ -86,4 +81,14 @@ function isEqual($user, $currentUser) : Bool
          return true;
     }
     return false;
+}
+
+function createNewUser(Array $data) : Bool
+{
+    $pdo = new PDO('mysql:host=marl;dbname=module','root', '');
+    $sql = "INSERT INTO module.users (name, job, phone, address, email, password, status, avatar, vk, telegram, instagram)
+    VALUES (:name,:job,:phone,:address,:email,:password,:status,:avatar,:vk,:telegram,:instagram)";
+    $statementAdder = $pdo->prepare($sql);
+    $user = $statementAdder->execute($data);
+    return $user;
 }

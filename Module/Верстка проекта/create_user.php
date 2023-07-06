@@ -1,4 +1,8 @@
-<?php session_start() ?>
+<?php session_start() ;
+require '../functions.php';
+if(!isAdmin(getCurrentUser())) redirect('page_login.php')
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,9 +46,9 @@
 
         <?php if(isset($_SESSION['user_exists'])):
             echo $_SESSION['user_exists']?>
-        <?php endif;?>
+        <?php endif;unset($_SESSION['user_exists'])?>
 
-        <form action="../register.php" method="post">
+        <form action="../add_new_user.php" method="post">
             <div class="row">
                 <div class="col-xl-6">
                     <div id="panel-1" class="panel">
