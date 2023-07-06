@@ -58,7 +58,7 @@ function setStatus($status, $userId) : Void
 
 }
 
-function uploadAvatar(Array $image, $userId) : Void
+function uploadAvatar(Array $image, $userId) : bool
 {
     $uniqueName = uniqid();
     $extension = pathinfo($image['name'], PATHINFO_EXTENSION);
@@ -68,9 +68,10 @@ function uploadAvatar(Array $image, $userId) : Void
 
     move_uploaded_file($image['tmp_name'], $uploadPath);
     $pdo = new PDO('mysql:host=marl;dbname=users', 'root', '');
-    $stmt = $pdo->prepare("UPDATE module.user_attend SET avatar = :avatar WHERE id=$userId");
+    $stmt = $pdo->prepare("UPDATE module.users SET avatar = :avatar WHERE id=$userId");
     $stmt->execute(['avatar' => $filename]);
-
+    $img = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $img;
 }
 
 function addSocialLinks($telegram, $instagram, $vk,$userId) : Void
@@ -118,7 +119,7 @@ function isLoggedIn() : Bool
 
 function isAdmin($user) : Bool
 {
-    return $user['role'] === 'admin';
+    return $user['role'] == 'admin';
 }
 
 function getCurrentUser()
@@ -140,35 +141,11 @@ function isEqual($user, $currentUser) : Bool
 function createNewUser(Array $data) : Bool
 {
     $pdo = new PDO('mysql:host=marl;dbname=module','root', '');
-    $sql = "INSERT INTO module.users (name, job, phone, address, email, password, status, avatar, vk, telegram, instagram)
-    VALUES (:name,:job,:phone,:address,:email,:password,:status,:avatar,:vk,:telegram,:instagram)";
+    $sql = "INSERT INTO module.users (name, job, phone, address, avatar,email,password, status, vk, telegram, instagram)
+                              VALUES (:name,:job,:phone,:address,:avatar,:email,:password,:status,:vk,:telegram,:instagram)";
     $statementAdder = $pdo->prepare($sql);
+    $user = $statementAdder->fetch(PDO::FETCH_ASSOC);
     $user = $statementAdder->execute($data);
     return $user;
 }
 
-/*function getUsersAllCols($userId) : array | bool
-{
-    $pdo = new PDO('mysql:host=marl;dbname=module','root', '');
-    $users = $pdo->prepare('SELECT * FROM module.users');
-    $usersInfo = $pdo->prepare('SELECT * FROM module.user_info');
-    $usersSocials = $pdo->prepare('SELECT * FROM module.user_socials');
-    $users = $pdo->prepare('SELECT * FROM module.user_attend');
-
-    $query = "
-    SELECT * FROM module.users WHERE id = :id
-    UNION
-    SELECT * FROM module.user_info WHERE id = :id
-    UNION
-    SELECT * FROM module.user_socials WHERE id = :id
-    UNION
-    SELECT * FROM module.user_attend WHERE id = :id
-";
-    $statement = $pdo->prepare($query);
-    $statement->bindParam(':id', $id);
-    $statement->execute();
-
-    $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-    return $results;
-
-}*/

@@ -1,17 +1,12 @@
 <?php session_start();
 require '../functions.php';
 
+if (! getCurrentUser()) header('Location: http://marl/Module/Верстка%20проекта/page_login.php');
+$user = getUserByEmail($_SESSION['user']['email']);
 
-if (! getCurrentUser()) header('Location: http://marl/Module/Верстка%20проекта/page_login.php'); ?>
-<?php
-$users = getAllUsers();
-    foreach ($users as $user):
-        if(!isAdmin(getCurrentUser()) || !isEqual($user, getCurrentUser())):
-            $_SESSION['error'] = "Можно редактировать только свой аккаунт";
-            header('Location: http://marl/Module/Верстка%20проекта/users.php');
-        elseif(isAdmin(getCurrentUser())):
-        $_POST['owner'] = $user;
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -59,7 +54,7 @@ $users = getAllUsers();
         </h1>
 
     </div>
-    <form action="">
+    <form action="../edit.php" method="post">
         <div class="row">
             <div class="col-xl-6">
                 <div id="panel-1" class="panel">
@@ -71,30 +66,30 @@ $users = getAllUsers();
                         <div class="panel-content">
                             <!-- username -->
                             <div class="form-group">
-                                <label class="form-label" for="simpleinput"><?php echo getCurrentUser()['name'] ?></label>
-                                <input type="text" id="simpleinput" class="form-control" value="Иван иванов">
+                                <label class="form-label" for="name">Имя</label>
+                                <input type="text" id="name" name="name" class="form-control" value="<?php echo $user['name'] ?? 'no name' ?>">
                             </div>
 
                             <!-- title -->
                             <div class="form-group">
-                                <label class="form-label" for="simpleinput">Место работы</label>
-                                <input type="text" id="simpleinput" class="form-control" value="Marlin Веб-разработчик">
+                                <label class="form-label" for="job">Место работы</label>
+                                <input type="text" id="job" name="job" class="form-control" value="<?php echo $user['job'] ?? 'no job' ?>">
                             </div>
 
                             <!-- tel -->
                             <div class="form-group">
-                                <label class="form-label" for="simpleinput">Номер телефона</label>
-                                <input type="text" id="simpleinput" class="form-control" value="8 888 8888 88">
+                                <label class="form-label" for="phone">Номер телефона</label>
+                                <input type="text" id="phone" name="phone" class="form-control" value="<?php echo $user['phone'] ?? 'no phone' ?>">
                             </div>
 
                             <!-- address -->
                             <div class="form-group">
-                                <label class="form-label" for="simpleinput">Адрес</label>
-                                <input type="text" id="simpleinput" class="form-control"
-                                       value="Восточные Королевства, Штормград">
+                                <label class="form-label" for="address">Адрес</label>
+                                <input type="text" id="address" name="address" class="form-control"
+                                       value="<?php echo $user['address'] ?? 'no address' ?>">
                             </div>
                             <div class="col-md-12 mt-3 d-flex flex-row-reverse">
-                                <button class="btn btn-warning">Редактировать</button>
+                                <button type="submit" class="btn btn-warning">Редактировать</button>
                             </div>
                         </div>
                     </div>
@@ -104,7 +99,7 @@ $users = getAllUsers();
     </form>
 </main>
 
-<?php  endif; endforeach; ?>
+
 <script src="js/vendors.bundle.js"></script>
 <script src="js/app.bundle.js"></script>
 <script>

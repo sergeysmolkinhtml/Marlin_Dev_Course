@@ -105,9 +105,9 @@ $users = getAllUsers();
                                 </a>
                                 <?php
 
-                                if (isAdmin($_SESSION['user']) || getCurrentUser() === $user):?>
+                                if (isAdmin(getCurrentUser()) || isEqual($user, getCurrentUser())):?>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="edit.php">
+                                        <a class="dropdown-item" href="edit.php?id=<?php echo $user['id']?>">
                                             <i class="fa fa-edit"></i>
                                             Редактировать</a>
                                         <a class="dropdown-item" href="security.html">
