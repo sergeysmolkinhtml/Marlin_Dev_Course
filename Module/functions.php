@@ -147,7 +147,7 @@ function createNewUser(Array $data) : Bool
     return $user;
 }
 
-function getUsersAllCols($userId) : array | bool
+/*function getUsersAllCols($userId) : array | bool
 {
     $pdo = new PDO('mysql:host=marl;dbname=module','root', '');
     $users = $pdo->prepare('SELECT * FROM module.users');
@@ -171,4 +171,4 @@ function getUsersAllCols($userId) : array | bool
     $results = $statement->fetchAll(PDO::FETCH_ASSOC);
     return $results;
 
-}
+}*/

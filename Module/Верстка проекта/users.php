@@ -6,7 +6,7 @@ if (isNotLoggedIn()) {
     header('Location: http://marl/Module/Верстка%20проекта/page_login.php');
 }
 
-$users = getUsersAllCols(11);
+$users = getAllUsers();
 
 ?>
 <!DOCTYPE html>

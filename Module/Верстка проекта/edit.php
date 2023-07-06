@@ -1,17 +1,17 @@
 <?php session_start();
 require '../functions.php';
-var_dump(getCurrentUser());
+
 
 if (! getCurrentUser()) header('Location: http://marl/Module/Верстка%20проекта/page_login.php'); ?>
 <?php
-/*$users = getAllUsers();
+$users = getAllUsers();
     foreach ($users as $user):
-        if(isAdmin(getCurrentUser()) || isEqual($user, getCurrentUser())):
+        if(!isAdmin(getCurrentUser()) || !isEqual($user, getCurrentUser())):
             $_SESSION['error'] = "Можно редактировать только свой аккаунт";
             header('Location: http://marl/Module/Верстка%20проекта/users.php');
         elseif(isAdmin(getCurrentUser())):
-
-*/?>
+        $_POST['owner'] = $user;
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -104,7 +104,7 @@ if (! getCurrentUser()) header('Location: http://marl/Module/Верстка%20п
     </form>
 </main>
 
-<?php /*else: header('Location: http://marl/Module/Верстка%20проекта/page_login.php') ;endif; endforeach; */?>
+<?php  endif; endforeach; ?>
 <script src="js/vendors.bundle.js"></script>
 <script src="js/app.bundle.js"></script>
 <script>
