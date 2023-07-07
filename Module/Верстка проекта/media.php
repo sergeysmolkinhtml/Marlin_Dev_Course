@@ -1,3 +1,23 @@
+<?php
+session_start( );
+require "../functions.php";
+
+if(!getCurrentUser()) {
+    $_SESSION['error_img'] = 'Можно редактировать фотку только своего профиля';
+    header('Location: http://marl/Module/Верстка%20проекта/page_login.php');
+    exit();
+}
+
+$users = getAllUsers();
+
+if(!isAdmin(getCurrentUser()) && !isEqual($users, getCurrentUser())) {
+    header('Location: http://marl/Module/Верстка%20проекта/page_login.php');
+}
+$user = getUserById($_SESSION['user']['id']);
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +58,7 @@
             </h1>
 
         </div>
-        <form action="">
+        <form action="../img_update.php" method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-xl-6">
                     <div id="panel-1" class="panel">
@@ -47,18 +67,23 @@
                                 <h2>Текущий аватар</h2>
                             </div>
                             <div class="panel-content">
+                                <?php if ($user['avatar']): ?>
+                                    <div class="form-group">
+                                        <img src="/avatars/<?php echo $user['avatar']?>" alt="" class="img-responsive" width="296">
+                                    </div>
+                                <?php else: ?>
+                                    <div class="form-group">
+                                        <img src="../Верстка%20проекта/img/card-backgrounds/cover-2-lg.png" alt="" class="img-responsive" width="296">
+                                    </div>
+                                <?php endif ?>
                                 <div class="form-group">
-                                    <img src="img/demo/authors/josh.png" alt="" class="img-responsive" width="200">
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="form-label" for="example-fileinput">Выберите аватар</label>
-                                    <input type="file" id="example-fileinput" class="form-control-file">
+                                    <label class="form-label" for="avatar">Выберите аватар</label>
+                                    <input type="file" id="avatar" name="avatar" class="form-control-file">
                                 </div>
 
 
                                 <div class="col-md-12 mt-3 d-flex flex-row-reverse">
-                                    <button class="btn btn-warning">Загрузить</button>
+                                    <button type="submit" class="btn btn-warning">Загрузить</button>
                                 </div>
                             </div>
                         </div>

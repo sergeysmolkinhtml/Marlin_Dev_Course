@@ -65,20 +65,19 @@ function setStatus($status, $userId) : Void
 
 }
 
-function uploadAvatar(Array $image, $userId) : bool
+function uploadAvatar(Array $image, $userId)
 {
     $uniqueName = uniqid();
     $extension = pathinfo($image['name'], PATHINFO_EXTENSION);
     $filename = $uniqueName . '.' . $extension;
 
-    $uploadPath = 'avatars/' . $filename;
+    $uploadPath = '../avatars/' . $filename;
 
     move_uploaded_file($image['tmp_name'], $uploadPath);
     $pdo = new PDO('mysql:host=marl;dbname=users', 'root', '');
     $stmt = $pdo->prepare("UPDATE module.users SET avatar = :avatar WHERE id=$userId");
     $stmt->execute(['avatar' => $filename]);
-    $img = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $img;
+
 }
 
 function addSocialLinks($telegram, $instagram, $vk,$userId) : Void
