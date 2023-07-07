@@ -1,3 +1,22 @@
+<?php
+session_start();
+require '../functions.php';
+
+if(!getCurrentUser()) header("Location: http://marl/Module/Верстка%20проекта/page_login.php");
+
+if(!getCurrentUser() && !isAdmin(getCurrentUser())) {
+    $_SESSION['error_status'] = 'можно редактировать только свой профиль';
+    header("Location: http://marl/Module/Верстка%20проекта/users.php");
+    exit();
+}
+
+$user = getUserById($_SESSION['user']['id']);
+$status = $user['status'];
+
+$statuses = ["Отошел", "Онлайн", 'Не беспокоить'];
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +57,7 @@
             </h1>
 
         </div>
-        <form action="">
+        <form action="../update_status.php" method="post">
             <div class="row">
                 <div class="col-xl-6">
                     <div id="panel-1" class="panel">
@@ -52,15 +71,17 @@
                                         <!-- status -->
                                         <div class="form-group">
                                             <label class="form-label" for="example-select">Выберите статус</label>
-                                            <select class="form-control" id="example-select">
-                                                <option>Онлайн</option>
-                                                <option>Отошел</option>
-                                                <option>Не беспокоить</option>
+                                            <select class="form-control" name="status" id="example-select">
+                                                <?php foreach ($statuses as $st):?>
+                                                    <option <?php if ($status == $st) echo 'selected' ?>  value="<?php echo $st ?>">
+                                                        <?php echo $st ?>
+                                                    </option>
+                                                <?php endforeach ?>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-12 mt-3 d-flex flex-row-reverse">
-                                        <button class="btn btn-warning">Set Status</button>
+                                        <button type="submit" class="btn btn-warning">Set Status</button>
                                     </div>
                                 </div>
                             </div>

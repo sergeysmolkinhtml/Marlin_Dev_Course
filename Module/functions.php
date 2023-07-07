@@ -57,11 +57,10 @@ function editUserInfo($username,$job,$phone,$address,$userId) : Void
 function setStatus($status, $userId) : Void
 {
     $pdo = new PDO('mysql:host=marl;dbname=module','root', '');
-    $sql = "INSERT INTO module.user_attend (status, user_id) VALUES (:status,:user_id)";
+    $sql = "UPDATE module.users SET status = :status WHERE id = $userId";
     $statement = $pdo->prepare($sql);
     $statement->execute([
-        'status' => $status,
-        'user_id' => $userId
+        ':status' => $status,
     ]);
 
 }
