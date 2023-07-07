@@ -16,7 +16,7 @@ if($_POST) {
     }
 
     $userID = createNewUser($_POST);
-    //uploadAvatar($_FILES['avatar'], $userID);
+    uploadAvatar($_FILES['avatar'], $userID);
 
     $_SESSION['user_created'] = 'Юзер добавлен';
     redirect('users.php');

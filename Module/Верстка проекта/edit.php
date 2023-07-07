@@ -1,11 +1,17 @@
 <?php session_start();
 require '../functions.php';
 
-if (! getCurrentUser()) header('Location: http://marl/Module/Верстка%20проекта/page_login.php');
-$user = getUserByEmail($_SESSION['user']['email']);
+if (! getCurrentUser()) {header('Location: http://marl/Module/Верстка%20проекта/page_login.php');exit();}
+
+$userAuth = getUserById($_SESSION['user']['id']);
+$userReal = getUserById($_GET['id']);
+
+if(!isAdmin($userAuth) && !isEqual($userAuth['id'], getCurrentUser()['id'])){
+    header('Location: http://marl/Module/Верстка%20проекта/page_login.php');
+    exit();
+}
 
 ?>
-
 
 
 <!DOCTYPE html>
@@ -54,7 +60,7 @@ $user = getUserByEmail($_SESSION['user']['email']);
         </h1>
 
     </div>
-    <form action="../edit.php" method="post">
+    <form action="../edit.php?id=<?php echo $userReal['id']?>" method="post">
         <div class="row">
             <div class="col-xl-6">
                 <div id="panel-1" class="panel">
@@ -62,31 +68,33 @@ $user = getUserByEmail($_SESSION['user']['email']);
                         <div class="panel-hdr">
                             <h2>Общая информация</h2>
                         </div>
-
+                        <?php if(isset($_SESSION['user_updated'])): ?>
+                            <div class="alert alert-info"> <?php echo $_SESSION['user_updated'] ?> </div>
+                        <?php endif; unset($_SESSION['user_updated'])?>
                         <div class="panel-content">
                             <!-- username -->
                             <div class="form-group">
                                 <label class="form-label" for="name">Имя</label>
-                                <input type="text" id="name" name="name" class="form-control" value="<?php echo $user['name'] ?? 'no name' ?>">
+                                <input type="text" id="name" name="name" class="form-control" value="<?php echo $userReal['name'] ?? 'no name' ?>">
                             </div>
 
                             <!-- title -->
                             <div class="form-group">
                                 <label class="form-label" for="job">Место работы</label>
-                                <input type="text" id="job" name="job" class="form-control" value="<?php echo $user['job'] ?? 'no job' ?>">
+                                <input type="text" id="job" name="job" class="form-control" value="<?php echo $userReal['job'] ?? 'no job' ?>">
                             </div>
 
                             <!-- tel -->
                             <div class="form-group">
                                 <label class="form-label" for="phone">Номер телефона</label>
-                                <input type="text" id="phone" name="phone" class="form-control" value="<?php echo $user['phone'] ?? 'no phone' ?>">
+                                <input type="text" id="phone" name="phone" class="form-control" value="<?php echo $userReal['phone'] ?? 'no phone' ?>">
                             </div>
 
                             <!-- address -->
                             <div class="form-group">
                                 <label class="form-label" for="address">Адрес</label>
                                 <input type="text" id="address" name="address" class="form-control"
-                                       value="<?php echo $user['address'] ?? 'no address' ?>">
+                                       value="<?php echo $userReal['address'] ?? 'no address' ?>">
                             </div>
                             <div class="col-md-12 mt-3 d-flex flex-row-reverse">
                                 <button type="submit" class="btn btn-warning">Редактировать</button>

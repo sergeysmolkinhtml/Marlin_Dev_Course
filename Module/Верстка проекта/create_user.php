@@ -45,11 +45,11 @@ if(!isAdmin(getCurrentUser())) redirect('page_login.php');
             </h1>
         </div>
 
-        <?php if(isset($_SESSION['user_exists'])):
-            echo $_SESSION['user_exists']?>
+        <?php if(isset($_SESSION['user_exists'])): ?>
+            <div class="alert alert-info"> <?php echo $_SESSION['user_exists']?> </div>
         <?php endif;unset($_SESSION['user_exists'])?>
 
-        <form action="../add_new_user.php" method="post">
+        <form action="../add_new_user.php" method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-xl-6">
                     <div id="panel-1" class="panel">
@@ -117,6 +117,7 @@ if(!isAdmin(getCurrentUser())) redirect('page_login.php');
                                     </select>
                                 </div>
                                 <div class="form-group">
+
                                         <label class="form-label" for="avatar">Загрузить аватар</label>
                                         <input type="file" id="avatar" name="avatar" class="form-control-file">
                                     </div>

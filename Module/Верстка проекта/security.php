@@ -1,12 +1,16 @@
 <?php session_start( );
 require "../functions.php";
-if(!getCurrentUser()) header('Location: http://marl/Module/Верстка%20проекта/page_login.php');
-$users = getAllUsers();
 
-if(!isAdmin(getCurrentUser()) && !isEqual($users, getCurrentUser())) {
+if (! getCurrentUser()) {header('Location: http://marl/Module/Верстка%20проекта/page_login.php');exit();}
+
+$userAuth = getUserById($_SESSION['user']['id']);
+
+$userReal = getUserById($_GET['id']);
+
+if(!isAdmin($userAuth) && !isEqual($userAuth['id'], getCurrentUser()['id'])) {
     header('Location: http://marl/Module/Верстка%20проекта/page_login.php');
+    exit();
 }
-$user = getUserById($_SESSION['user']['id']);
 
 ?>
 
@@ -61,7 +65,7 @@ $user = getUserById($_SESSION['user']['id']);
         <?php if(isset($_SESSION['error_email'])):?>
             <div class="alert alert-info"> <?php echo $_SESSION['error_email']?> </div>
         <?php endif; unset($_SESSION['error_email']) ?>
-        <form action="../update_security.php" method="post">
+        <form action="../update_security.php?id=<?php echo $userReal['id']?>" method="post">
             <div class="row">
                 <div class="col-xl-6">
                     <div id="panel-1" class="panel">
@@ -73,7 +77,7 @@ $user = getUserById($_SESSION['user']['id']);
                                 <!-- email -->
                                 <div class="form-group">
                                     <label class="form-label" for="email">Email</label>
-                                    <input type="text" id="email" name="email" class="form-control" value="<?php echo $user['email']?> ">
+                                    <input type="text" id="email" name="email" class="form-control" value="<?php echo $userReal['email']?> ">
                                 </div>
 
                                 <!-- password -->

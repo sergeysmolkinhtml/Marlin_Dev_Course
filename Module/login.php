@@ -26,6 +26,7 @@ function Login() : Bool
             return false;
         }
     }
+
     $_SESSION['user'] = $user;
 
     return true;

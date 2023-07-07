@@ -10,7 +10,7 @@ if(!getCurrentUser() && !isAdmin(getCurrentUser())) {
     exit();
 }
 
-$user = getUserById($_SESSION['user']['id']);
+$user = getUserById($_GET['id']);
 $status = $user['status'];
 
 $statuses = ["Отошел", "Онлайн", 'Не беспокоить'];
@@ -57,7 +57,7 @@ $statuses = ["Отошел", "Онлайн", 'Не беспокоить'];
             </h1>
 
         </div>
-        <form action="../update_status.php" method="post">
+        <form action="../update_status.php?id=<?php echo $user['id']?>" method="post">
             <div class="row">
                 <div class="col-xl-6">
                     <div id="panel-1" class="panel">

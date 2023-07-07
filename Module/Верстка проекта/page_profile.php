@@ -2,8 +2,11 @@
 require '../functions.php';
 
 if(!getCurrentUser()) {header("Location: http://marl/Module/Верстка%20проекта/page_login.php"); exit(); }
-$users = getAllUsers();
-if(!isAdmin(getCurrentUser()) && !isEqual($users,getCurrentUser())){
+
+$userAuth = getUserById($_SESSION['user']['id']);
+$userReal = getUserById($_GET['id']);
+
+if(!isAdmin(getCurrentUser()) && !isEqual($userAuth['id'],getCurrentUser()['id'])){
     header("Location: http://marl/Module/Верстка%20проекта/page_login.php");exit();
 }
 ?>
@@ -60,21 +63,17 @@ if(!isAdmin(getCurrentUser()) && !isEqual($users,getCurrentUser())){
                                 <div class="d-flex flex-column align-items-center justify-content-center p-4">
                                     <img src="img/demo/avatars/avatar-admin-lg.png" class="rounded-circle shadow-2 img-thumbnail" alt="">
                                     <h5 class="mb-0 fw-700 text-center mt-3">
-                                        <?php
-                                        $email = $_SESSION['user']['email'];
-                                        $user = getUserByEmail($email);
-                                        echo $user['name']
-                                        ?>
-                                        <small class="text-muted mb-0"><?php echo $user['job']?></small>
+                                        <?php echo $userReal['name'] ?? 'SOME NAME' ?>
+                                        <small class="text-muted mb-0"><?php echo $userReal['job'] ?? 'Some job'?></small>
                                     </h5>
                                     <div class="mt-4 text-center demo">
-                                        <a href="<?php echo $user['instagram']?>" class="fs-xl" style="color:#C13584">
+                                        <a href="<?php echo $userReal['instagram']?>" class="fs-xl" style="color:#C13584">
                                             <i class="fab fa-instagram"></i>
                                         </a>
-                                        <a href="<?php echo $user['vk']?>" class="fs-xl" style="color:#4680C2">
+                                        <a href="<?php echo $userReal['vk']?>" class="fs-xl" style="color:#4680C2">
                                             <i class="fab fa-vk"></i>
                                         </a>
-                                        <a href="<?php echo $user['telegram']?>" class="fs-xl" style="color:#0088cc">
+                                        <a href="<?php echo $userReal['telegram']?>" class="fs-xl" style="color:#0088cc">
                                             <i class="fab fa-telegram"></i>
                                         </a>
                                     </div>
@@ -83,11 +82,11 @@ if(!isAdmin(getCurrentUser()) && !isEqual($users,getCurrentUser())){
                             <div class="col-12">
                                 <div class="p-3 text-center">
                                     <a href="tel:+13174562564" class="mt-1 d-block fs-sm fw-400 text-dark">
-                                        <i class="fas fa-mobile-alt text-muted mr-2"></i> <?php echo $user['phone']?></a>
+                                        <i class="fas fa-mobile-alt text-muted mr-2"></i> <?php echo $userReal['phone'] ?? 'Some phone'?></a>
                                     <a href="mailto:oliver.kopyov@marlin.ru" class="mt-1 d-block fs-sm fw-400 text-dark">
-                                        <i class="fas fa-mouse-pointer text-muted mr-2"></i> <?php echo $user['email']?></a>
+                                        <i class="fas fa-mouse-pointer text-muted mr-2"></i> <?php echo $userReal['email'] ?? 'Some email'?></a>
                                     <address class="fs-sm fw-400 mt-4 text-muted">
-                                        <i class="fas fa-map-pin mr-2"></i> <?php echo $user['address']?>
+                                        <i class="fas fa-map-pin mr-2"></i> <?php echo $userReal['address'] ?? 'Some address'?>
                                     </address>
                                 </div>
                             </div>

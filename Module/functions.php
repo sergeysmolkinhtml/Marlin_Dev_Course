@@ -144,15 +144,16 @@ function isEqual($user, $currentUser) : Bool
     return false;
 }
 
-function createNewUser(Array $data) : Bool
+function createNewUser(Array $data) : Bool | String
 {
     $pdo = new PDO('mysql:host=marl;dbname=module','root', '');
-    $sql = "INSERT INTO module.users (name, job, phone, address, avatar,email,password, status, vk, telegram, instagram)
-                              VALUES (:name,:job,:phone,:address,:avatar,:email,:password,:status,:vk,:telegram,:instagram)";
+    $sql = "INSERT INTO module.users (name, job, phone, address,email,password, status, vk, telegram, instagram)
+                              VALUES (:name,:job,:phone,:address,:email,:password,:status,:vk,:telegram,:instagram)";
     $statementAdder = $pdo->prepare($sql);
+    $statementAdder->execute($data);
     $user = $statementAdder->fetch(PDO::FETCH_ASSOC);
-    $user = $statementAdder->execute($data);
-    return $user;
+
+    return $pdo->lastInsertId();
 }
 
 function delete($userId) : Void
@@ -161,5 +162,4 @@ function delete($userId) : Void
     $sql = "DELETE FROM module.users WHERE id = $userId";
     $statementAdder = $pdo->prepare($sql);
     $statementAdder->execute();
-
 }

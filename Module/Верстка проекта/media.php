@@ -1,20 +1,17 @@
 <?php
 session_start( );
+
 require "../functions.php";
 
-if(!getCurrentUser()) {
-    $_SESSION['error_img'] = 'Можно редактировать фотку только своего профиля';
+if (! getCurrentUser()) {header('Location: http://marl/Module/Верстка%20проекта/page_login.php');exit();}
+
+$userAuth = getUserById($_SESSION['user']['id']);
+$userReal = getUserById($_GET['id']);
+
+if(!isAdmin($userAuth) && !isEqual($userAuth['id'], getCurrentUser()['id'])){
     header('Location: http://marl/Module/Верстка%20проекта/page_login.php');
     exit();
 }
-
-$users = getAllUsers();
-
-if(!isAdmin(getCurrentUser()) && !isEqual($users, getCurrentUser())) {
-    header('Location: http://marl/Module/Верстка%20проекта/page_login.php');
-}
-$user = getUserById($_SESSION['user']['id']);
-
 
 ?>
 
@@ -58,7 +55,7 @@ $user = getUserById($_SESSION['user']['id']);
             </h1>
 
         </div>
-        <form action="../img_update.php" method="post" enctype="multipart/form-data">
+        <form action="../img_update.php?id=<?php echo $userReal['id'] ?>" method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-xl-6">
                     <div id="panel-1" class="panel">
@@ -67,9 +64,9 @@ $user = getUserById($_SESSION['user']['id']);
                                 <h2>Текущий аватар</h2>
                             </div>
                             <div class="panel-content">
-                                <?php if ($user['avatar']): ?>
+                                <?php if ($userReal['avatar']): ?>
                                     <div class="form-group">
-                                        <img src="/avatars/<?php echo $user['avatar']?>" alt="" class="img-responsive" width="296">
+                                        <img src="/avatars/<?php echo $userReal['avatar']?>" alt="" class="img-responsive" width="296">
                                     </div>
                                 <?php else: ?>
                                     <div class="form-group">

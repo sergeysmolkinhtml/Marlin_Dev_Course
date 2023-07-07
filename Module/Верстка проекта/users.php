@@ -4,9 +4,11 @@ include '../functions.php';
 
 if (isNotLoggedIn()) {
     header('Location: http://marl/Module/Верстка%20проекта/page_login.php');
+    exit();
 }
-
 $users = getAllUsers();
+
+$userAuth = getUserById($_SESSION['user']['id'])
 
 ?>
 <!DOCTYPE html>
@@ -61,11 +63,13 @@ $users = getAllUsers();
     <div class="row">
         <div class="col-xl-12">
             <?php if(isset($_SESSION['user_created'])): ?>
-                <?php echo $_SESSION['user_created']?>
+                <div class="alert alert-info "> <?php echo $_SESSION['user_created']?> </div>
             <?php endif ; unset($_SESSION['user_created'])?>
-        <?php if(isAdmin(getCurrentUser())): ?>
-             <a class="btn btn-success" href="create_user.php">Добавить</a>
-        <?php endif ?>
+
+            <?php if(isAdmin($userAuth)): ?>
+                <a class="btn btn-success" href="create_user.php">Добавить</a>
+             <?php endif ?>
+
             <div class="border-faded bg-faded p-3 mb-g d-flex mt-3">
                 <input type="text" id="js-filter-contacts" name="filter-contacts"
                        class="form-control shadow-inset-2 form-control-lg" placeholder="Найти пользователя">
@@ -93,34 +97,34 @@ $users = getAllUsers();
                                           style="background-image:url('img/demo/avatars/avatar-b.png'); background-size: cover;"></span>
                                 </span>
                             <div class="info-card-text flex-1">
-                                <a href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-info"
-                                   data-toggle="dropdown" aria-expanded="false">
+                                <a href="page_profile.php?id=<?php echo $user['id'] ?>" class="fs-xl text-truncate text-truncate-lg text-info">
+
                                     <?php echo $user['name'] ?? $user['id'] ?>
 
-                                    <?php if (isAdmin(getCurrentUser()) || isEqual($user, getCurrentUser())):?>
-                                    <i class="fal fas fa-cog fa-fw d-inline-block ml-1 fs-md"></i>
-                                    <i class="fal fa-angle-down d-inline-block ml-1 fs-md"></i>
+                                    <?php if (isAdmin($userAuth) || isEqual($user, $userAuth)):?>
+                                        <i class="fal fas fa-cog fa-fw d-inline-block ml-1 fs-md"></i>
+                                        <i class="fal fa-angle-down d-inline-block ml-1 fs-md"></i>
                                     <?php endif;?>
 
                                 </a>
                                 <?php
 
-                                if (isAdmin(getCurrentUser()) || isEqual($user, getCurrentUser())):?>
+                                if (isAdmin($userAuth) || isEqual($user, $userAuth)):?>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="edit.php?id=<?php echo $user['id']?>">
                                             <i class="fa fa-edit"></i>
                                             Редактировать</a>
-                                        <a class="dropdown-item" href="security.php">
+                                        <a class="dropdown-item" href="security.php?id=<?php echo $user['id']?>">
                                             <i class="fa fa-lock"></i>
                                             Безопасность</a>
-                                        <a class="dropdown-item" href="status.php">
+                                        <a class="dropdown-item" href="status.php?id=<?php echo $user['id']?>">
                                             <i class="fa fa-sun"></i>
                                             Установить статус</a>
-                                        <a class="dropdown-item" href="media.php">
+                                        <a class="dropdown-item" href="media.php?id=<?php echo $user['id'] ?>">
                                             <i class="fa fa-camera"></i>
                                             Загрузить аватар
                                         </a>
-                                        <?php if (isAdmin(getCurrentUser())): ?>
+                                        <?php if (isAdmin($userAuth) || isEqual($userAuth['id'], getCurrentUser()['id'])) : ?>
 
                                             <form action="../logout.php?id=<?php echo $user['id'] ?>" method="post">
                                                 <button type="submit" class="dropdown-item"
