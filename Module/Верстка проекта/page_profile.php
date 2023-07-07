@@ -1,8 +1,12 @@
 <?php session_start();
 require '../functions.php';
 
-
-if(!getCurrentUser()) header("Location: http://marl/Module/Верстка%20проекта/page_login.php"); ?>
+if(!getCurrentUser()) {header("Location: http://marl/Module/Верстка%20проекта/page_login.php"); exit(); }
+$users = getAllUsers();
+if(!isAdmin(getCurrentUser()) && !isEqual($users,getCurrentUser())){
+    header("Location: http://marl/Module/Верстка%20проекта/page_login.php");exit();
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,8 +36,11 @@ if(!getCurrentUser()) header("Location: http://marl/Module/Верстка%20пр
                     <li class="nav-item">
                         <a class="nav-link" href="#">Войти</a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Выйти</a>
+                        <form action="../logout.php" method="post">
+                            <button type="submit" class="nav-link" href="">Выйти</button>
+                        </form>
                     </li>
                 </ul>
             </div>

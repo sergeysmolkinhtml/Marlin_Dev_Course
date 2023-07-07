@@ -65,7 +65,7 @@ function setStatus($status, $userId) : Void
 
 }
 
-function uploadAvatar(Array $image, $userId)
+function uploadAvatar(Array $image, $userId) : Void
 {
     $uniqueName = uniqid();
     $extension = pathinfo($image['name'], PATHINFO_EXTENSION);
@@ -155,3 +155,11 @@ function createNewUser(Array $data) : Bool
     return $user;
 }
 
+function delete($userId) : Void
+{
+    $pdo = new PDO('mysql:host=marl;dbname=module','root', '');
+    $sql = "DELETE FROM module.users WHERE id = $userId";
+    $statementAdder = $pdo->prepare($sql);
+    $statementAdder->execute();
+
+}

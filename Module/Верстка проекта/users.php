@@ -120,11 +120,17 @@ $users = getAllUsers();
                                             <i class="fa fa-camera"></i>
                                             Загрузить аватар
                                         </a>
-                                        <a href="#" class="dropdown-item"
-                                           onclick="return confirm('are you sure?');">
-                                            <i class="fa fa-window-close"></i>
-                                            Удалить
-                                        </a>
+                                        <?php if (isAdmin(getCurrentUser())): ?>
+
+                                            <form action="../logout.php?id=<?php echo $user['id'] ?>" method="post">
+                                                <button type="submit" class="dropdown-item"
+                                                        onclick="return confirm('are you sure?');">
+                                                    <i class="fa fa-window-close"></i>
+                                                    Удалить
+                                                </button>
+                                            </form>
+
+                                        <?php endif; ?>
                                     </div>
                                 <?php endif;?>
                                 <span class="text-truncate text-truncate-xl"><?php echo $user['job'] ?></span>
