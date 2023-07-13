@@ -3,6 +3,8 @@ session_start();
 
 require 'functions.php';
 
+unset($_SESSION['user']);
+
 function Login() : Bool
 {
     $email = $_POST['email'];
@@ -26,7 +28,7 @@ function Login() : Bool
             return false;
         }
     }
-
+    $_SESSION['user_login'] = "Вы вошли в аккаунт";
     $_SESSION['user'] = $user;
 
     return true;

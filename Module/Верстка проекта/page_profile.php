@@ -1,15 +1,23 @@
 <?php session_start();
-require '../functions.php';
+
+include_once '../functions.php';
+include_once '../notes_functions.php';
+
 
 if(!getCurrentUser()) {header("Location: http://marl/Module/Верстка%20проекта/page_login.php"); exit(); }
 
 $userAuth = getUserById($_SESSION['user']['id']);
-$userReal = getUserById($_GET['id']);
+$userReal = getUserById($_GET['id'] ?? $_SESSION['user']['id']) ;
 
-if(!isAdmin(getCurrentUser()) && !isEqual($userAuth['id'],getCurrentUser()['id'])){
+if(!isAdmin(getCurrentUser()) && !isEqual($userAuth, getCurrentUser())){
     header("Location: http://marl/Module/Верстка%20проекта/page_login.php");exit();
 }
+
+$notes = getUserNotes($userReal['id']);
+
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -41,7 +49,7 @@ if(!isAdmin(getCurrentUser()) && !isEqual($userAuth['id'],getCurrentUser()['id']
                     </li>
 
                     <li class="nav-item">
-                        <form action="../logout.php" method="post">
+                        <form action="../logout.php?id=<?php echo $userAuth['id']?>" method="post">
                             <button type="submit" class="nav-link" href="">Выйти</button>
                         </form>
                     </li>
@@ -90,9 +98,95 @@ if(!isAdmin(getCurrentUser()) && !isEqual($userAuth['id'],getCurrentUser()['id']
                                     </address>
                                 </div>
                             </div>
+                            <div class="col-12">
+                                <div class="p-3 text-center">
+                                    <div class="fs-sm fw-400 mt-4 text-muted">
+                                        <i class="fas fa-map-pin mr-2"></i>
+                                        <?php if(isAdmin($userAuth)): ?>
+                                            <form action="../add_new_note.php?id=<?php echo $userReal['id']?>" method="post">
+                                                <div class="form-group">
+                                                    <label class="form-label" for="title">Название</label>
+                                                    <input type="text" id="title" name="title" class="form-control"">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-label" for="context">Контент</label>
+                                                    <textarea id="context" name="context" class="form-control"> </textarea>
+                                                </div>
+                                               <button type="submit" class="btn btn-success">Добавить</button>
+                                            </form>
+                                        <?php endif ?>
+                                        <nav class="navbar navbar-expand-sm navbar-dark">
+                                            <img src="https://i.imgur.com/CFpa3nK.jpg" width="20" height="20" class="d-inline-block align-top rounded-circle" alt="">
+                                            <a class="navbar-brand ml-2" href="#" data-abc="true">Rib Simpson</a>
+                                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+                                                <span class="navbar-toggler-icon"></span>
+                                            </button>
+                                            <div class="end">
+                                                <div class="collapse navbar-collapse" id="navbarColor02">
+                                                    <ul class="navbar-nav">
+                                                        <li class="nav-item"> <a class="nav-link" href="#" data-abc="true">Work</a> </li>
+                                                        <li class="nav-item"> <a class="nav-link" href="#" data-abc="true">Capabilities</a> </li>
+                                                        <li class="nav-item "> <a class="nav-link" href="#" data-abc="true">Articles</a> </li>
+                                                        <li class="nav-item active"> <a class="nav-link mt-2" href="#" data-abc="true" id="clicked">Contact<span class="sr-only">(current)</span></a> </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </nav>
+                                        <?php foreach ($notes as $note): ?>
+                                            <!-- posts -->
+                                            <div class="card">
+                                                <h5 class="card-header"><?php echo $note['title'] ?> </h5>
+                                                <div class="card-body">
+                                                    <h5 class="card-title"><?php echo $note['id'] ?></h5>
+                                                    <p class="card-text"><?php echo $note['context'] ?></p>
+                                                </div>
+                                            </div>
+                                            <!-- Comments -->
+                                            <section>
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-sm-5 col-md-6 col-12 pb-4">
+                                                            <h1>Comments</h1>
+                                                            <div class="comment mt-4 text-justify float-left">
+                                                                <?php foreach (getUsersNotesComments($note['id'], $userReal['id']) as $noteCom):?>
+                                                                    <img src="https://i.imgur.com/yTFUilP.jpg" alt="" class="rounded-circle" width="40" height="40">
+                                                                    <h4></h4>
+                                                                    <span> <?php echo $noteCom['created_at']?>8</span>
+
+                                                                    <br>
+                                                                    <p><?php echo $noteCom['content']?></p>
+                                                                    <?php var_dump(displayNestedComments($noteCom['id'], getUsersNotesComments($note['id'], $userReal['id'])));exit();
+
+                                                                    displayNestedComments($noteCom['id'], getUsersNotesComments($note['id'], $userReal['id']));
+                                                                    ?>
+                                                                <?php endforeach;?>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4 col-md-5 col-sm-4 offset-md-1 offset-sm-1 col-12 mt-4">
+                                                            <form action="../add_comment_to_note.php?id=<?php echo $userReal['id']?>&note_id=<?php echo $note['id']?>" method="post" id="algin-form">
+                                                                <div class="form-group">
+                                                                    <h4>Leave a comment</h4>
+                                                                    <label for="message">Message</label>
+                                                                    <textarea name="content" id="msg" cols="30" rows="5" class="form-control" style="background-color: #efeaea;"></textarea>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <button type="submit" id="post" class="btn btn-success">Post Comment</button>
+                                                                </div>
+
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <hr style="border: 2px solid darkcyan;">
+                                        <?php endforeach ?>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                </div>
+
             </div>
         </main>
     </body>

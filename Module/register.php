@@ -2,6 +2,7 @@
 session_start();
 
 require_once 'functions.php';
+var_dump($_SESSION);
 
 $email = $_POST['email'];
 $password = $_POST['password'];

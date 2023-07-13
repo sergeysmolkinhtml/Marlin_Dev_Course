@@ -7,7 +7,7 @@ $userAuth = getUserById($_SESSION['user']['id']);
 
 $userReal = getUserById($_GET['id']);
 
-if(!isAdmin($userAuth) && !isEqual($userAuth['id'], getCurrentUser()['id'])) {
+if(!isAdmin($userAuth) && !isEqual($userAuth, getCurrentUser())) {
     header('Location: http://marl/Module/Верстка%20проекта/page_login.php');
     exit();
 }

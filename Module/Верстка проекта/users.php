@@ -7,8 +7,8 @@ if (isNotLoggedIn()) {
     exit();
 }
 $users = getAllUsers();
+$userAuth = getUserById($_SESSION['user']['id']);
 
-$userAuth = getUserById($_SESSION['user']['id'])
 
 ?>
 <!DOCTYPE html>
@@ -52,9 +52,10 @@ $userAuth = getUserById($_SESSION['user']['id'])
 </nav>
 
 <main id="js-page-content" role="main" class="page-content mt-3">
-    <div class="alert alert-success">
-        Профиль успешно обновлен.
-    </div>
+        <?php if(isset($_SESSION['user_login'])): ?>
+            <div class="alert alert-info "> <?php echo $_SESSION['user_login']?> </div>
+        <?php endif ; unset($_SESSION['user_login'])?>
+
     <div class="subheader">
         <h1 class="subheader-title">
             <i class='subheader-icon fal fa-users'></i> Список пользователей
@@ -110,6 +111,7 @@ $userAuth = getUserById($_SESSION['user']['id'])
                                 <?php
 
                                 if (isAdmin($userAuth) || isEqual($user, $userAuth)):?>
+
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="edit.php?id=<?php echo $user['id']?>">
                                             <i class="fa fa-edit"></i>
@@ -124,7 +126,7 @@ $userAuth = getUserById($_SESSION['user']['id'])
                                             <i class="fa fa-camera"></i>
                                             Загрузить аватар
                                         </a>
-                                        <?php if (isAdmin($userAuth) || isEqual($userAuth['id'], getCurrentUser()['id'])) : ?>
+                                        <?php if (isAdmin($userAuth) || isEqual($user, $userAuth)) : ?>
 
                                             <form action="../logout.php?id=<?php echo $user['id'] ?>" method="post">
                                                 <button type="submit" class="dropdown-item"

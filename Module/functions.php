@@ -163,3 +163,4 @@ function delete($userId) : Void
     $statementAdder = $pdo->prepare($sql);
     $statementAdder->execute();
 }
+

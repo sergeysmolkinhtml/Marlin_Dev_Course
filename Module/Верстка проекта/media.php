@@ -8,7 +8,7 @@ if (! getCurrentUser()) {header('Location: http://marl/Module/Верстка%20�
 $userAuth = getUserById($_SESSION['user']['id']);
 $userReal = getUserById($_GET['id']);
 
-if(!isAdmin($userAuth) && !isEqual($userAuth['id'], getCurrentUser()['id'])){
+if(!isAdmin($userAuth) && !isEqual($userAuth, getCurrentUser())){
     header('Location: http://marl/Module/Верстка%20проекта/page_login.php');
     exit();
 }
@@ -53,8 +53,10 @@ if(!isAdmin($userAuth) && !isEqual($userAuth['id'], getCurrentUser()['id'])){
             <h1 class="subheader-title">
                 <i class='subheader-icon fal fa-image'></i> Загрузить аватар
             </h1>
-
         </div>
+        <?php if(isset($_SESSION['success_img'])): ?>
+            <div class="alert alert-info "> <?php echo $_SESSION['success_img']?> </div>
+        <?php endif ; unset($_SESSION['success_img'])?>
         <form action="../img_update.php?id=<?php echo $userReal['id'] ?>" method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-xl-6">

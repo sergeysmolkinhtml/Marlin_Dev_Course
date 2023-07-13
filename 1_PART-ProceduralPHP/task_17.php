@@ -8,15 +8,15 @@
         <meta name="description" content="Chartist.html">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimal-ui">
-        <link id="vendorsbundle" rel="stylesheet" media="screen, print" href="css/vendors.bundle.css">
-        <link id="appbundle" rel="stylesheet" media="screen, print" href="css/app.bundle.css">
-        <link id="myskin" rel="stylesheet" media="screen, print" href="css/skins/skin-master.css">
-        <link rel="stylesheet" media="screen, print" href="css/statistics/chartist/chartist.css">
-        <link rel="stylesheet" media="screen, print" href="css/miscellaneous/lightgallery/lightgallery.bundle.css">
-        <link rel="stylesheet" media="screen, print" href="css/fa-solid.css">
-        <link rel="stylesheet" media="screen, print" href="css/fa-brands.css">
-        <link rel="stylesheet" media="screen, print" href="css/fa-regular.css">
-        <link rel="stylesheet" href="css/style.css">
+        <link id="vendorsbundle" rel="stylesheet" media="screen, print" href="../css/vendors.bundle.css">
+        <link id="appbundle" rel="stylesheet" media="screen, print" href="../css/app.bundle.css">
+        <link id="myskin" rel="stylesheet" media="screen, print" href="../css/skins/skin-master.css">
+        <link rel="stylesheet" media="screen, print" href="../css/statistics/chartist/chartist.css">
+        <link rel="stylesheet" media="screen, print" href="../css/miscellaneous/lightgallery/lightgallery.bundle.css">
+        <link rel="stylesheet" media="screen, print" href="../css/fa-solid.css">
+        <link rel="stylesheet" media="screen, print" href="../css/fa-brands.css">
+        <link rel="stylesheet" media="screen, print" href="../css/fa-regular.css">
+        <link rel="stylesheet" href="../css/style.css">
 
     </head>
     <body class="mod-bg-1 mod-nav-link ">
@@ -37,13 +37,12 @@
                             <div class="panel-content">
                                 <div class="panel-content">
                                     <div class="form-group">
-                                        <form action="upload.php" method="post" enctype="multipart/form-data">
+                                        <form action="task_17_handler.php" method="post" enctype="multipart/form-data">
                                             <div class="form-group">
-                                                <label class="form-label" for="image">Image
-                                                    <input type="file" name="image[]" multiple class="form-control">
-                                                </label>
-                                            </div>
+                                                <label class="form-label" for="photo">Image</label>
+                                            <input type="file" id="photo" name="image" class="form-control">
                                             <button type="submit" class="btn btn-success mt-3">Submit</button>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -67,17 +66,21 @@
                             <div class="panel-content">
                                 <div class="panel-content image-gallery">
                                     <div class="row">
+                                        <?php
+                                        $pdo = new PDO('mysql:host=marl;dbname=users', 'root', '');
+
+                                        $stmt = $pdo->query('SELECT path FROM images');
+                                        $images = $stmt->fetchAll(PDO::FETCH_COLUMN);
+                                        ?>
+                                        
+                                        <?php foreach ($images as $image): ?>
+                                        
                                         <div class="col-md-3 image">
-                                            <img src="img/demo/gallery/1.jpg">
+                                            <img src="upload/<?php echo $image?>" alt="">
                                         </div>
 
-                                        <div class="col-md-3 image">
-                                            <img src="img/demo/gallery/2.jpg">
-                                        </div>
+                                        <?php endforeach; ?>
 
-                                        <div class="col-md-3 image">
-                                            <img src="img/demo/gallery/3.jpg">
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -90,8 +93,8 @@
         </main>
         
 
-        <script src="js/vendors.bundle.js"></script>
-        <script src="js/app.bundle.js"></script>
+        <script src="../js/vendors.bundle.js"></script>
+        <script src="../js/app.bundle.js"></script>
         <script>
             // default list filter
             initApp.listFilter($('#js_default_list'), $('#js_default_list_filter'));

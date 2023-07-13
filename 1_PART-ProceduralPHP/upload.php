@@ -13,7 +13,7 @@ function uploadFile($filename, $tmpName) : void
 
     $result = pathinfo($filename);
 
-    $filename = uniqid() . '.' . $result['extension'];
+    $filename = uniqid() . 'marlin-course' . $result['extension'];
 
     move_uploaded_file($tmpName, 'uploads/' . $filename);
 
