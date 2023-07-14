@@ -1,6 +1,8 @@
 <?php
 
-class QueryBuilder
+include_once '../Module/functions.php';
+
+final class QueryBuilder
 {
     private PDO $pdo;
 
@@ -26,7 +28,7 @@ class QueryBuilder
     public function create(String $tableName, Array $data) : Void
     {
         $keys = implode(',', array_keys($data));
-        $tags = ":" . implode(',', array_keys($data));
+        $tags = ":" . implode(', :', array_keys($data));
         $query = "INSERT INTO BlogDB.{$tableName} ({$keys}) VALUES ({$tags})";
         $statement = $this->pdo->prepare($query);
         $statement->execute($data);
@@ -34,23 +36,21 @@ class QueryBuilder
 
     public function update(String $tableName, Array $data, Int $postId) : Void
     {
-        #TODO bymyself
-        // Сбор ключей c формы(мы принимаем в data)
+
         $keys = array_keys($data);
-        //Перебираем каждый ключ и добавляем к строке в опред формате
+
         $query = '';
         foreach ($keys as $key) {
             $query .= $key . '=:' . $key . ',';
         }
-        // Вырезаем кому в конце
+
         $keys = rtrim($query,',');
-        // Добавляем id в data, ибо в форме его нет (для передачи в execute)
+
         $data['id'] = $postId;
-        // Запрос на обновление
+
         $statement = $this->pdo->prepare(
             "UPDATE BlogDB.{$tableName} SET {$keys} WHERE BlogDB.posts.id = :id"
         );
-        // Выполнение
         $statement->execute($data);
 
     }

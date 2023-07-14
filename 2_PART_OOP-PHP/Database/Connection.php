@@ -1,6 +1,6 @@
 <?php
 
-class Connection
+final class Connection
 {
     public static function connect($config) : PDO
     {
