@@ -17,3 +17,10 @@ if (array_key_exists($route, $routes)){
 
 
 
+/*BROWSER -> /homepage -> index.php Front Controller
+                          Router
+                            ->/homepage ->controllers/homepage.php
+                                                        ->QueryBuilder->all()
+                                                        ->include VIEW
+                                                        ->RESULT
+*/
