@@ -8,8 +8,11 @@ use PDOException;
 class Database
 {
     private static ?Database $instance = null;
+
     private $results, $count, $query;
+
     private PDO $pdo;
+
     private Bool $error = false;
 
     private function __construct() {
@@ -19,7 +22,8 @@ class Database
            die($exception->getMessage());
        }
    }
-   public static function getInstance() : ?Database
+
+    public static function getInstance() : ?Database
    {
        if(self::$instance === null) {
            self::$instance = new Database();
@@ -50,6 +54,72 @@ class Database
         return $this;
     }
 
+    public function get(String $tableName, Array $where = []) : Bool | Static
+    {
+        return $this->action('SELECT *', $tableName, $where);
+    }
+
+    public function update(String $tableName, Int $id, Array $fields = []) : Bool
+    {
+        $set = '';
+        foreach ($fields as $key=>$field) {
+            $set .= "$key = ?,";
+        }
+        $set = rtrim($set,',');
+        $sql = "UPDATE pureoop.$tableName SET $set WHERE id = $id";
+
+        if(!$this->query($sql, $fields)->getErrors()){
+            return true;
+        }
+        return false;
+    }
+
+    public function insert(String $tableName, Array $fields = []) : Bool
+    {
+        $values = '';
+        foreach ($fields as $field) {
+            $values .= "?,";
+        }
+        $values = rtrim($values,',');
+
+        $sql = "INSERT INTO pureoop.$tableName (`" . implode('`, `', array_keys($fields)) . "`) VALUES (" . $values .")";
+
+        if(!$this->query($sql, $fields)->getErrors()){
+            return true;
+        }
+        return false;
+    }
+
+    public function delete(String $tableName, Array $where = []) : Bool | Static
+    {
+        return $this->action('DELETE',$tableName, $where);
+    }
+
+    public function first()
+    {
+        return $this->results[0];
+    }
+
+    public function action(String $action, String $tableName, Array $where = []) : Bool | Static
+    {
+        $operators = ['=','>','<','>=','=<'];
+
+        if(count($where) === 3) {
+            $field = $where[0];
+            $operator = $where[1];
+            $value = $where[2];
+        }
+
+        if(in_array($operator,$operators)){
+            $sql = "$action FROM pureoop.$tableName WHERE $field $operator ?";
+
+            if(!$this->query($sql,[$value])->getErrors()) {
+                return $this;
+            }
+        }
+        return false;
+    }
+
     public function getErrors() : bool
     {
         return $this->error;
@@ -65,6 +135,5 @@ class Database
         return $this->count;
     }
 
-   
-   
+
 }
