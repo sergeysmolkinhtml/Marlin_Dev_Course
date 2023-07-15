@@ -8,20 +8,18 @@ class User
     private $data;
     private mixed $session_name;
     private bool $LoggedIn = false;
-
+    private mixed $cookieName;
 
     public function __construct($user = null)
     {
         $this->db = Database::getInstance();
         $this->session_name = Config::get('session.user_session');
-
+        $this->cookieName = Config::get('cookie.cookie_name');
         if (! $user) {
             if (Session::exists($this->session_name)) {
                 $user = Session::get($this->session_name);
                 if ($this->find($user)) {
                     $this->LoggedIn = true;
-                } else {
-                    //logout
                 }
             }
         } else {
@@ -34,7 +32,7 @@ class User
         $this->db->insert('users', $fields);
     }
 
-    public function login($email = null, $password = null, $remember = false) : bool
+    public function login($email = null, $password = null, $remember = false) : Bool
     {
         if (! $email && ! $password && $this->exists()) {
             Session::put($this->session_name, $this->getData()->id);
@@ -56,7 +54,8 @@ class User
                         } else {
                             $hash = $hashCheck->first()->hash;
                         }
-                        Cookie::put(Config::get('cookie.cookie_name'), $hash, Config::get('cookie.cookie_expiry'));
+
+                        Cookie::put($this->cookieName, $hash, Config::get('cookie.cookie_expiry'));
                     }
                     return true;
                 }
@@ -67,7 +66,7 @@ class User
 
     public function exists() :Bool
     {
-        return (isset($this->data));
+        return (!empty($this->data));
     }
 
     public function find($value = null) : Bool
@@ -90,15 +89,38 @@ class User
         return $this->data;
     }
 
-    public function isLoggedIn() : bool
+    public function isLoggedIn() : Bool
     {
         return $this->LoggedIn;
     }
 
-    public function logout() : void
+    public function logout() : Void
     {
+        $this->db->delete('user_sessions',['user_id','=',$this->getData()->id]);
         Session::delete($this->session_name);
+        Cookie::delete($this->cookieName);
     }
 
+    public function update($fields = [], $id = null) : Void
+    {
+        if(!$id && $this->isLoggedIn()) {
+            $id = $this->getData()->id;
+        }
+
+        $this->db->update('users', $id, $fields);
+    }
+
+    public function hasPermission($key = null) : Bool
+    {
+        $group = $this->db->get('groups',['id','=', $this->getData()->group_id]);
+        if($group->getCount()) {
+            $permissions = $group->first()->permissions;
+            $permissions = json_decode($permissions, true);
+            if($permissions[$key]) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }
