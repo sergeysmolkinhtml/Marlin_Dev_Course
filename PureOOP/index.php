@@ -1,9 +1,12 @@
 <?php
+session_start();
 
 require_once 'Validation.php';
 require_once 'Input.php';
 require_once 'Database.php';
 require_once 'Config.php';
+require_once 'Token.php';
+require_once 'Session.php';
 
 //$users = Database::getInstance()->query("SELECT * FROM pureoop.users WHERE username IN (?, ?)" , ['username 1','username2']);
 
@@ -34,32 +37,40 @@ $GLOBALS['config'] = [
       'password' => '',
       'database' => 'pureoop',
   ],
+  'session' => [
+        'token_name' => 'token',
+  ]
 ];
+
+
 // usage
 if(Input::exists()) {
-    $validate = new Validation();
-    $validation = $validate->check($_POST,[
-        'username' => [
-          'required' => true,
-          'min' => 2,
-          'max' => 15,
-          'unique' => 'users',
-        ],
-        'password' => [
-            'required' => true,
-            'min' => 3,
-        ],
-        'password_again' => [
-            'required' => true,
-            'matches' => 'password',
-        ]
-    ]);
+    if (Token::check(Input::get('token'))) {
+        $validate = new Validation();
+        $validation = $validate->check($_POST, [
+            'username' => [
+                'required' => true,
+                'min' => 2,
+                'max' => 15,
+                'unique' => 'users',
+            ],
+            'password' => [
+                'required' => true,
+                'min' => 3,
+            ],
+            'password_again' => [
+                'required' => true,
+                'matches' => 'password',
+            ]
+        ]);
 
-    if($validation->isPassed()) {
-        echo 'Passed';
-    } else{
-        foreach ($validation->getErrors() as $error) {
-            echo $error . "<br>";
+
+        if ($validation->isPassed()) {
+            echo 'Passed';
+        } else {
+            foreach ($validation->getErrors() as $error) {
+                echo $error . "<br>";
+            }
         }
     }
 }
@@ -82,6 +93,7 @@ if(Input::exists()) {
             <input type="text" name="password_again">
         </label>
     </div>
+    <input type="hidden" name="token" value="<?php echo Token::generate();?>">
     <div class="field">
         <button type="submit">Submit</button>
     </div>
