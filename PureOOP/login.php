@@ -12,7 +12,8 @@ if(Input::exists()){
 
         if($validate->isPassed()) {
             $user = new User();
-            $login = $user->login(Input::get('email'), Input::get('password'));
+            $remember = (Input::get('remember')) === 'on' ? true : false;
+            $login = $user->login(Input::get('email'), Input::get('password'), $remember);
 
             if($login) {
                 echo 'login successful';
@@ -41,6 +42,11 @@ if(Input::exists()){
         <label for="email">Password</label>
         <input type="text" name="password" value="<?php echo Input::get('password')?>">
     </div>
+    <div class="field">
+        <input type="checkbox" name="remember" id="remember">
+        <label for="remember"> Remember me</label>
+    </div>
+
     <input type="hidden" name="token" value="<?php echo Token::generate(); ?>">
 
     <div class="field">

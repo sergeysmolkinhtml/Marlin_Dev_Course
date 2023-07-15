@@ -10,6 +10,8 @@ require_once 'App/Token.php';
 require_once 'App/Session.php';
 require_once 'App/User.php';
 require_once 'App/Redirect.php';
+require_once 'App/Cookie.php';
+
 //$users = Database::getInstance()->query("SELECT * FROM pureoop.users WHERE username IN (?, ?)" , ['username 1','username2']);
 
 //$users = Database::getInstance()->get('users',['username','=','Usernameka']);
@@ -42,7 +44,20 @@ $GLOBALS['config'] = [
   'session' => [
         'token_name' => 'token',
         'user_session' => 'user'
+  ],
+  'cookie' => [
+      'cookie_name' => 'hash',
+      'cookie_expiry' => 604800,
   ]
 ];
 
+if(Cookie::exists(Config::get('cookie.cookie_name')) && !Session::exists(Config::get('session.user_session'))) {
+    $hash = Cookie::get(Config::get('cookie.cookie_name'));
+    $hashCheck = Database::getInstance()->get('user_sessions',['hash','=', $hash]);
+
+    if($hashCheck->getCount()) {
+        $user = new User($hashCheck->first()->user_id);
+        $user->login();
+    }
+}
 
