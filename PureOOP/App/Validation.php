@@ -43,7 +43,12 @@ class Validation
                             if ($check->getCount()) {
                                 $this->addError("{$item} already exists.");
                             }
-                        break;
+                            break;
+                        case 'email':
+                            if (! filter_var($value, FILTER_VALIDATE_EMAIL)) {
+                                $this->addError("{$item} in not an email");
+                            }
+                            break;
                     }
                 }
             }

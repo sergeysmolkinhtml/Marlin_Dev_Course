@@ -1,19 +1,15 @@
 <?php
 
 
-
 class Input
 {
     public static function exists($type = 'post') : Bool
     {
-        switch ($type){
-            case 'post':
-                return (!empty($_POST)) ? true : false;
-            case 'get':
-                return (!empty($_GET)) ? true : false;
-            default:
-                return false;
-        }
+        return match ($type) {
+            'post' => ! empty($_POST),
+            'get' => ! empty($_GET),
+            default => false,
+        };
     }
 
     public static function get($item)

@@ -1,0 +1,74 @@
+<?php
+
+class User
+{
+    private ?Database $db;
+    private $data;
+    private mixed $session_name;
+    private bool $LoggedIn = false;
+
+    public function __construct($user = null)
+    {
+        $this->db = Database::getInstance();
+        $this->session_name = Config::get('session.user_session');
+
+        if(!$user) {
+            if(Session::exists($this->session_name)) {
+                $user = Session::get($this->session_name);
+                if($this->find($user)) {
+                    $this->LoggedIn = true;
+                } else {
+                    //logout
+                }
+            }
+        } else {
+            $this->find($user);
+        }
+    }
+
+    public function create($fields = []) : Void
+    {
+        $this->db->insert('users', $fields);
+    }
+
+    public function login($email = null, $password = null) : Bool
+    {
+        if($email) {
+           $user = $this->find($email);
+           if($user){
+               if(password_verify($password, $this->getData()->password)){
+                   Session::put($this->session_name, $this->getData()->id);
+                   return true;
+               }
+           }
+        }
+        return false;
+    }
+
+    public function find($value = null) : Bool
+    {
+        if(is_numeric($value)){
+            $this->data = $this->db->get('users',['id', '=', $value])->first();
+        } else {
+            $this->data = $this->db->get('users',['email', '=', $value])->first();
+        }
+
+        if($this->data){
+            return true;
+        }
+
+        return false;
+    }
+
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    public function isLoggedIn() : Bool
+    {
+        return $this->LoggedIn;
+    }
+
+
+}
