@@ -1,9 +1,5 @@
 <?php
 
-namespace App;
-
-use PDO;
-use PDOException;
 
 class Database
 {
@@ -17,7 +13,11 @@ class Database
 
     private function __construct() {
        try {
-           $this->pdo = new PDO('mysql:host=marl;dbname=users', 'root', '');
+           $this->pdo = new PDO(
+       "mysql:host=".Config::get('mysql.host').
+            ";dbname=".Config::get('mysql.database'),
+            Config::get('mysql.username'),
+            Config::get('mysql.password'));
        } catch (PDOException $exception){
            die($exception->getMessage());
        }
@@ -95,11 +95,6 @@ class Database
         return $this->action('DELETE',$tableName, $where);
     }
 
-    public function first()
-    {
-        return $this->results[0];
-    }
-
     public function action(String $action, String $tableName, Array $where = []) : Bool | Static
     {
         $operators = ['=','>','<','>=','=<'];
@@ -135,5 +130,9 @@ class Database
         return $this->count;
     }
 
+    public function first()
+    {
+        return $this->results[0];
+    }
 
 }
