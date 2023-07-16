@@ -1,7 +1,6 @@
 <?php
 
 
-
 class User
 {
     private ?Database $db;
@@ -64,7 +63,7 @@ class User
         return false;
     }
 
-    public function exists() :Bool
+    public function exists() : Bool
     {
         return (!empty($this->data));
     }
@@ -112,7 +111,7 @@ class User
 
     public function hasPermission($key = null) : Bool
     {
-        $group = $this->db->get('groups',['id','=', $this->getData()->group_id]);
+        $group = $this->db->get('groups', ['id','=', $this->getData()->group_id]);
         if($group->getCount()) {
             $permissions = $group->first()->permissions;
             $permissions = json_decode($permissions, true);
