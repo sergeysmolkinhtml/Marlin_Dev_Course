@@ -12,16 +12,19 @@ use PDO;
 use Tamtamchik\SimpleFlash\Exceptions\FlashTemplateNotFoundException;
 use function Tamtamchik\SimpleFlash\flash;
 
-
+/**
+ * @todo Dependency injection
+ *
+ */
 class HomeController
 {
 
     private $auth;
-
+    //вытаскиеваем ответсвеноость с класса
     public function __construct()
     {
+        $templates = new Engine();
         $db = new \PDO('mysql:dbname=pack;host=marl;charset=utf8mb4', 'root', '');
-
         $this->auth = new Auth($db);
     }
 
