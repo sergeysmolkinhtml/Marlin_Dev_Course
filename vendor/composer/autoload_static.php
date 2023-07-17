@@ -7,8 +7,10 @@ namespace Composer\Autoload;
 class ComposerStaticInit5b079d4f02014836c21e578bc03ce04a
 {
     public static $files = array (
+        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         '3917c79c5052b270641b5a200963dbc2' => __DIR__ . '/..' . '/kint-php/kint/init.php',
         '253c157292f75eb38082b5acb06f3f01' => __DIR__ . '/..' . '/nikic/fast-route/src/functions.php',
+        'b33e3d135e5d9e47d845c576147bda89' => __DIR__ . '/..' . '/php-di/php-di/src/functions.php',
         '6157b075b923803e5ef157aeb43b83bd' => __DIR__ . '/..' . '/tamtamchik/simple-flash/src/function.php',
     );
 
@@ -17,17 +19,27 @@ class ComposerStaticInit5b079d4f02014836c21e578bc03ce04a
         array (
             'Tamtamchik\\SimpleFlash\\' => 23,
         ),
+        'P' => 
+        array (
+            'Psr\\Container\\' => 14,
+        ),
         'L' => 
         array (
             'League\\Plates\\' => 14,
+            'Laravel\\SerializableClosure\\' => 28,
         ),
         'K' => 
         array (
             'Kint\\' => 5,
         ),
+        'I' => 
+        array (
+            'Invoker\\' => 8,
+        ),
         'F' => 
         array (
             'FastRoute\\' => 10,
+            'Faker\\' => 6,
         ),
         'D' => 
         array (
@@ -36,6 +48,7 @@ class ComposerStaticInit5b079d4f02014836c21e578bc03ce04a
             'Delight\\Cookie\\' => 15,
             'Delight\\Base64\\' => 15,
             'Delight\\Auth\\' => 13,
+            'DI\\' => 3,
         ),
         'A' => 
         array (
@@ -49,17 +62,33 @@ class ComposerStaticInit5b079d4f02014836c21e578bc03ce04a
         array (
             0 => __DIR__ . '/..' . '/tamtamchik/simple-flash/src',
         ),
+        'Psr\\Container\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
         'League\\Plates\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/plates/src',
+        ),
+        'Laravel\\SerializableClosure\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laravel/serializable-closure/src',
         ),
         'Kint\\' => 
         array (
             0 => __DIR__ . '/..' . '/kint-php/kint/src',
         ),
+        'Invoker\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/php-di/invoker/src',
+        ),
         'FastRoute\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/fast-route/src',
+        ),
+        'Faker\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/fakerphp/faker/src/Faker',
         ),
         'Delight\\Http\\' => 
         array (
@@ -80,6 +109,10 @@ class ComposerStaticInit5b079d4f02014836c21e578bc03ce04a
         'Delight\\Auth\\' => 
         array (
             0 => __DIR__ . '/..' . '/delight-im/auth/src',
+        ),
+        'DI\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/php-di/php-di/src',
         ),
         'Aura\\SqlQuery\\' => 
         array (
