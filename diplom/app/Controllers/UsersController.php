@@ -7,107 +7,166 @@ use App\Services\AuthService;
 use App\Services\Redirect;
 use App\Services\Session;
 use App\Services\UserService;
-use DI\Attribute\Inject;
+use Delight\Auth\AuthError;
+use Delight\Auth\NotLoggedInException;
+use Delight\Auth\Role;
 use League\Plates\Engine;
 
 class UsersController
 {
-    #[Inject]
+
     private Engine $templateEngine;
-    #[Inject]
     private AuthService $authService;
-    #[Inject]
     private UserRepository $userRepository;
-    #[Inject]
     private UserService $userService;
 
     public function __construct(
         Engine $templateEngine,
         AuthService $authService,
-        UserRepository $userRepository,
         UserService $userService,
+        UserRepository $userRepository,
     ) {
          $this->templateEngine = $templateEngine;
          $this->authService = $authService;
-         $this->userRepository = $userRepository;
          $this->userService = $userService;
+         $this->userRepository = $userRepository;
      }
 
 
     public function index() : void
     {
+
         $users = $this->userRepository->getAll();
+        $this->authService->assignAdminToUserById($this->authService->getLoggedInUserId());
 
-        //$loggedInUserId = $this->authService->getLoggedInUserId();
+        $loggedInUser = $this->authService->getLoggedInUser();
 
-        $this->templateEngine->render('users', [
+        echo $this->templateEngine->render('users', [
             'users' => $users,
-            //'loggedInUserId' => $loggedInUserId,
+            'loggedInUser' => $loggedInUser,
         ]);
+    }
+
+    public function edit($id) : void
+    {
+        $user = $this->userRepository->getById($id);
+
+        echo $this->templateEngine->render('edit', ['user' => $user]);
     }
 
     public function update($id) : void
     {
+        $user = $this->userRepository->getById($id);
         $loggedInUserId = $this->authService->getLoggedInUserId();
 
-        if ($loggedInUserId !== $id) {
-            Session::flash('error','Cant modify others profiles');
-            Redirect::to('users.php');
+        if ($loggedInUserId !== $id &&
+            ! $this->authService->getLoggedInUser()->hasRole(Role::ADMIN)
+            && $user['role'] !== 'admin'
+        ) {
+            Session::flash('error-modifying','Cant modify others profiles');
+            Redirect::to('edit-page/id=' . $id);
         }
 
-        $name = $_POST['name'];
-        $email = $_POST['email'];
+        $this->userRepository->update($id, data: $_POST);
 
-        $user = $this->userRepository->getById($id);
-
-        $user->setName($name);
-        $user->setEmail($email);
-
-        $this->userRepository->update($user);
-
-        Session::flash('success','Successfully updated profile');
-        Redirect::to('update');
+        Session::flash('success-update','Successfully updated profile');
+        Redirect::to('users');
     }
 
-    public function changePassword($id) : void
+    public function securitySettings($id) : void
     {
-        $loggedInUserId = $this->authService->getLoggedInUserId();
+        $user = $this->userRepository->getById($id);
+        echo $this->templateEngine->render('security',['user' => $user]);
+    }
 
-        if ($loggedInUserId !== $id) {
-            Session::flash('error','Cant modify others profiles');
+    public function changeAuthData($id) : void
+    {
+
+        $loggedInUserId = $this->authService->getLoggedInUserId();
+        $user = $this->userRepository->getById($id);
+
+        if ($loggedInUserId !== $id &&
+            ! $this->authService->getLoggedInUser()->hasRole(Role::ADMIN)
+            && $user['role'] !== 'admin')
+        {
+            Session::flash('error-modify','Cant modify others profiles');
             Redirect::to('users.php');
         }
 
-        $newPassword = $_POST['new_password'];
+        $this->userRepository->updatePassword($id, $_POST);
+        $this->userRepository->updateEmail($id, $_POST['email']);
 
+        Session::flash('success-security','Successfully updated auth');
+
+        Redirect::to('/users');
+
+
+    }
+
+    public function status($id) : void
+    {
         $user = $this->userRepository->getById($id);
 
+        echo $this->templateEngine->render('status', ['user' => $user]);
+    }
 
-        $this->userService->changePassword($user, $newPassword);
+    public function changeStatus($id) : void
+    {
 
-        Session::flash('success','Successfully updated password');
-        Redirect::to('/change-password');
+        $loggedInUserId = $this->authService->getLoggedInUserId();
+        $user = $this->userRepository->getById($id);
 
+        if ($loggedInUserId !== $id &&
+            ! $this->authService->getLoggedInUser()->hasRole(Role::ADMIN)
+            && $user['role'] !== 'admin')
+        {
+            Session::flash('error-status','Cant modify others profiles');
+            Redirect::to('users.php');
+        }
+
+        $this->userRepository->updateStatus($id, $_POST['status']);
+        var_dump('success');
+        Redirect::to('/');
+    }
+
+    public function uploadAvatarform($id) : void
+    {
+        $user = $this->userRepository->getById($id);
+
+        echo $this->templateEngine->render('media', ['user' => $user]);
     }
 
     public function uploadAvatar($id) : void
     {
 
         $loggedInUserId = $this->authService->getLoggedInUserId();
-
-        if ($loggedInUserId !== $id) {
-            Session::flash('error','Cant modify others profiles');
-            Redirect::to('users.php');
-        }
-        $avatarFile = $_FILES['avatar'];
-
         $user = $this->userRepository->getById($id);
 
-        $this->userService->uploadAvatar($user, $avatarFile);
+        if ($loggedInUserId !== $id &&
+            ! $this->authService->getLoggedInUser()->hasRole(Role::ADMIN)
+            && $user['role'] !== 'admin')
+        {
+            Session::flash('error','Cant modify others profiles');
+            Redirect::to('users');
+        }
 
-        Session::flash('success','Successfully updated avatar');
+        $photoFile = $_FILES['avatar'];
+
+        $filename = $this->userService->uploadAvatar($photoFile);
+
+        if ($filename) {
+            $this->userRepository->update($id, ['avatar' => $filename]);
+        }
+
+        Session::flash('success-image','Successfully updated avatar');
         Redirect::to('/');
 
+    }
+
+    public function delete($id) : void
+    {
+        $this->userRepository->delete($id);
+        Redirect::to('users');
     }
 
 

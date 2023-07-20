@@ -39,7 +39,7 @@
                         <span class="text-white opacity-50 ml-auto mr-2 hidden-sm-down">
                             Уже зарегистрированы?
                         </span>
-                        <a href="page_login.html" class="btn-link text-white ml-auto ml-sm-0">
+                        <a href="page_login.php" class="btn-link text-white ml-auto ml-sm-0">
                             Войти
                         </a>
                     </div>
@@ -64,7 +64,7 @@
                                         <strong>Уведомление!</strong> Этот эл. адрес уже занят другим пользователем.
                                     </div>
 
-                                    <form id="js-login" novalidate="" action="/registeruser" method="get">
+                                    <form id="js-login" novalidate="" action="/register-process" method="post">
                                         <div class="form-group">
                                             <label class="form-label" for="emailverify">Email</label>
                                             <input type="email" id="emailverify" name="email" class="form-control" placeholder="Эл. адрес" required>

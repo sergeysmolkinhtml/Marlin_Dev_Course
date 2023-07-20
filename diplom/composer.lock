@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "54ef70a16cecc97b660bc2ef463356c1",
+    "content-hash": "92f165af2b9998df7f7fadd93d7015a7",
     "packages": [
         {
             "name": "aura/session",
@@ -74,30 +74,29 @@
         },
         {
             "name": "aura/sqlquery",
-            "version": "2.7.1",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/auraphp/Aura.SqlQuery.git",
-                "reference": "dd81b57aeb43628180a9c70a4df58d872024d7f2"
+                "reference": "6f71a3b82d7018dff437cdd316f3eb851fd3713c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/auraphp/Aura.SqlQuery/zipball/dd81b57aeb43628180a9c70a4df58d872024d7f2",
-                "reference": "dd81b57aeb43628180a9c70a4df58d872024d7f2",
+                "url": "https://api.github.com/repos/auraphp/Aura.SqlQuery/zipball/6f71a3b82d7018dff437cdd316f3eb851fd3713c",
+                "reference": "6f71a3b82d7018dff437cdd316f3eb851fd3713c",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.9"
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "ext-pdo_sqlite": "*",
+                "yoast/phpunit-polyfills": "^1.0"
             },
             "suggest": {
-                "aura/sql": "Provides an extension to the native PDO along with a profiler and connection locator. Use version 2.*."
+                "aura/sql": "Provides an extension to the native PDO along with a profiler and connection locator."
             },
             "type": "library",
-            "extra": {
-                "aura": {
-                    "type": "library"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Aura\\SqlQuery\\": "src/"
@@ -105,7 +104,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD-2-Clause"
+                "MIT"
             ],
             "authors": [
                 {
@@ -136,9 +135,9 @@
             ],
             "support": {
                 "issues": "https://github.com/auraphp/Aura.SqlQuery/issues",
-                "source": "https://github.com/auraphp/Aura.SqlQuery/tree/2.7.1"
+                "source": "https://github.com/auraphp/Aura.SqlQuery/tree/3.0.0"
             },
-            "time": "2016-10-03T20:34:56+00:00"
+            "time": "2023-04-25T13:21:16+00:00"
         },
         {
             "name": "bramus/router",

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Services\Redirect;
+use App\Services\Session;
 use Delight\Auth\Auth;
 use League\Plates\Engine;
 
@@ -18,21 +19,20 @@ class AuthController
         $this->auth = $auth;
     }
 
-    public function registerForm()
+    public function registerForm() : void
     {
         echo $this->template->render('page_register');
     }
 
-    public function processRegister() : void
+    public function registerProcess() : void
     {
-        $name = $_POST['name'];
         $email = $_POST['email'];
         $password = $_POST['password'];
 
         if ($_POST) {
 
             try {
-                $userId = $this->auth->register($email, $password, $name, function ($selector, $token) {
+                $userId = $this->auth->register($email, $password, $email . 'user', function ($selector, $token) {
                     echo 'Send ' . $selector . ' and ' . $token . ' to the user (e.g. via email)';
                     echo '  For emails, consider using the mail(...) function, Symfony Mailer, Swiftmailer, PHPMailer, etc.';
                     echo '  For SMS, consider using a third-party service and a compatible SDK';
@@ -49,8 +49,8 @@ class AuthController
                 die('Too many requests');
             }
         }
-
-        Redirect::to('login.php');
+        Session::flash('success-register','Successfully registered!!!');
+        Redirect::to('login-page');
 
     }
 
@@ -73,10 +73,10 @@ class AuthController
 
     public function loginForm() : void
     {
-        echo $this->template->render('page_register');
+        echo $this->template->render('page_login');
     }
 
-    public function processLogin() : void
+    public function loginProcess() : void
     {
 
         if ($_POST) {
@@ -97,6 +97,12 @@ class AuthController
             }
         }
 
+        Redirect::to('/users');
+    }
+
+    public function logout(): void
+    {
+        $this->auth->logOut();
     }
 
     public function verifyEmail() : void
